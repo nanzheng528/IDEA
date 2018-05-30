@@ -1,0 +1,44 @@
+server:
+  port: 8921
+  # context-path: /cloudlink-core-log
+spring:
+  application:
+    name: cloudlink-building-guard    # 项目名称尽量用小写
+  jpa: 
+    database: MYSQL
+  datasource: #mysql
+    url: jdbc:mysql://39.106.42.39:3306/cloudlink_building_guard?useUnicode=true&characterEncoding=utf8&useSSL=false #数据库地址
+    username: core123 #数据库用户名
+    password: coremysql   #数据库密码
+    driverClassName: com.mysql.jdbc.Driver #mysql驱动包
+    max-active: 20
+    max-idle: 8
+    min-idle: 8
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 500000
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations:
+      - classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+user:
+  email:
+    receive: louyuweishi@freedotech.com# 用户自定义配置：意见反馈接收邮箱
+  token:
+    security:
+      ignored: /,/test/**,/login/**,/msm/**,/verfy/**,/feedback/**,/error/**,/data/dictionary/**
+fileConfig: 
+  diskFile: 
+    root:   \file
+    fileServer: http://10.134.9.185:8905/file/downLoad?fileId=
+hiecs: 
+  temperatureSummer: 25 #25℃±1℃
+  temperatureWinter: 19 #19℃±1℃
+  humiditySummer: 50  #50%±10%
+  humidityWinter: 40  #40%±10%
+  CO2: 800 #国标要求小于1000ppm，建议小于800ppm
+  PM: 40 #自定义
+  HCHO: 0.08 #甲醛<=0.08mg
+    
