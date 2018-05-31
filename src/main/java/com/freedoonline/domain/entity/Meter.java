@@ -19,8 +19,8 @@ public class Meter implements Serializable{
 	private String buildingId;
 	private String name;				//表名
 	private String number;				//编号
-	private String type;				//表的类型
-	private String energyType;			//能耗类别
+	private Integer type;				//表的类型
+	private Integer energyType;			//能耗类别
 //	private String floor;				//楼层
 //	private String location;			//位置描述
 	private String buildingAreaId;		//楼宇区域ID
@@ -42,12 +42,6 @@ public class Meter implements Serializable{
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public String getEnergyType() {
-		return energyType;
-	}
-	public void setEnergyType(String energyType) {
-		this.energyType = energyType;
-	}
 //	public String getFloor() {
 //		return floor;
 //	}
@@ -63,6 +57,18 @@ public class Meter implements Serializable{
 	
 	public String getUlAlarm() {
 		return ulAlarm;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public void setEnergyType(int energyType) {
+		this.energyType = energyType;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public Integer getEnergyType() {
+		return energyType;
 	}
 	public String getBuildingAreaId() {
 		return buildingAreaId;
@@ -138,12 +144,6 @@ public class Meter implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 	public String getEnpId() {
 		return enpId;
