@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.freedoonline.common.interceptor.ThreadLocalHolder;
+import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.MeterService;
@@ -36,7 +37,7 @@ public class MeterController extends BaseController{
 	private MeterService meterService;
 	
 	@PostMapping("/addMeter")
-	public BusinessResult addMeter (HttpServletRequest request,@RequestBody Meter meter){
+	public Object addMeter (HttpServletRequest request,@RequestBody Meter meter){
 		try {
 			ArrayList<String> arrayList = new ArrayList<String>();
 			User user = ThreadLocalHolder.getUser();
@@ -47,14 +48,15 @@ public class MeterController extends BaseController{
 			String objectId = meterService.addMeter(meter);
 			arrayList.add(objectId);
 			logger.info("-----------添加Meter成功----------------");
-			return new BusinessResult(1,"200","ok",arrayList);
-			
+			return GuardRresponseMessage.creatBySuccessData(objectId);
 		} catch (BusinessException e) {
-			logger.error("------------添加metery业务失敗" + e.getMessage());;
-			return new BusinessResult(-1, e.getCode(), e.getMessage());
+			logger.error("------------添加metery业务失敗----------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
 		} catch (Exception e) {
-			logger.error("------添加失败"+e.getMessage());
-			return new BusinessResult(-1, "400", e.getMessage());
+			logger.error("------添加metery失败");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
 		}
 	}
 }
