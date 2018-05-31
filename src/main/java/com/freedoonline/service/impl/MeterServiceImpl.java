@@ -1,5 +1,7 @@
 package com.freedoonline.service.impl;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -50,6 +52,18 @@ public class MeterServiceImpl implements MeterService {
 		String Objectid = MeterDao.addMeter(meter);
 		logger.info("-------添加meter数据成功----------");
 		return Objectid;
+	}
+
+	@Override
+	public Boolean delMeter(Map<String, Object> map) throws BusinessException, Exception {
+		logger.info("--------------开始删除meter数据----------------");
+		if (!StringUtil.hasText((String)map.get("objectId"))){
+			throw new BusinessException("objectId不能为空", "403");
+		}
+		if (MeterDao.delMeter(map) == 1){
+			return true;
+		};
+		return false;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.freedoonline.domain.impl;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -23,10 +24,12 @@ public class MeterDaoImpl implements MeterDao {
 	private BaseJdbcDao baseJdbcDao;
     
 	static String INSERTMETERSQL;
+	static String DELTMETERSQL;
 	
 	static{
 		INSERTMETERSQL = "INSERT INTO meter (object_id, building_id, building_area_id, name, number, type, energy_type, "
 				+ "service_area,ul_alarm, ll_alarm, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		DELTMETERSQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
 	}
 	
 	public String addMeter(Meter meter) {
@@ -40,6 +43,15 @@ public class MeterDaoImpl implements MeterDao {
 		logger.info("-----------meterdao插入数据成功--------------");
 		return objectId;
 		
+	}
+
+	@Override
+	public int delMeter(Map<String, Object> map) {
+		Object [] args = {
+				0,map.get("modifyUser"),new Date(),map.get("objectId"),
+		};
+	return	baseJdbcDao.update(DELTMETERSQL, args);
+
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.freedoonline.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,6 @@ import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.MeterService;
 
 import cn.cloudlink.core.common.base.controller.BaseController;
-import cn.cloudlink.core.common.dataaccess.data.BusinessResult;
 import cn.cloudlink.core.common.exception.BusinessException;
 
 @RestController
@@ -36,8 +38,10 @@ public class MeterController extends BaseController{
 	@Autowired
 	private MeterService meterService;
 	
+	
+	@SuppressWarnings("rawtypes")
 	@PostMapping("/addMeter")
-	public Object addMeter (HttpServletRequest request,@RequestBody Meter meter){
+	public GuardRresponseMessage addMeter (HttpServletRequest request,@RequestBody Meter meter){
 		try {
 			ArrayList<String> arrayList = new ArrayList<String>();
 			User user = ThreadLocalHolder.getUser();
@@ -55,6 +59,32 @@ public class MeterController extends BaseController{
 			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
 		} catch (Exception e) {
 			logger.error("------添加metery失败");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping("/delMeter/{objectId}")
+	public GuardRresponseMessage delMeter (HttpServletRequest request,@PathVariable(value = "objectId") String objectId){
+		try {
+			User user = ThreadLocalHolder.getUser();
+			Map<String, Object> delParamMap = new HashMap<>();
+			delParamMap.put("modifyUser", user.getObjectId());
+			delParamMap.put("objectId", objectId);
+			if (meterService.delMeter(delParamMap)) {
+				logger.info("-----------删除Meter成功----------------");
+				return GuardRresponseMessage.creatBySuccessMessage();
+			} else {
+				logger.info("-----------删除Meter数据库内容失败----------------");
+				return GuardRresponseMessage.creatByErrorMessage("400","删除失败");
+			}
+		} catch (BusinessException e) {
+			logger.error("------------删除metery业务失敗----------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			logger.error("------删除metery失败----------");
 			e.printStackTrace();
 			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
 		}
