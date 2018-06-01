@@ -27,6 +27,7 @@ public class Meter implements Serializable{
 	private String serviceArea;			//服务区域
 	private String ulAlarm;				//上限警报值
 	private String llAlarm;				//下限警报值
+	private Integer status;				//运行状态
 	
 	private String createUser;
 	private Date createTime;
@@ -57,6 +58,18 @@ public class Meter implements Serializable{
 	
 	public String getUlAlarm() {
 		return ulAlarm;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	public void setEnergyType(Integer energyType) {
+		this.energyType = energyType;
 	}
 	public void setType(int type) {
 		this.type = type;
