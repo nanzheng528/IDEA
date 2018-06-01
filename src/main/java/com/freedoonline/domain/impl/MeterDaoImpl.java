@@ -28,7 +28,7 @@ public class MeterDaoImpl implements MeterDao {
 	
 	static{
 		INSERTMETERSQL = "INSERT INTO meter (object_id, building_id, building_area_id, name, number, type, energy_type, "
-				+ "service_area,ul_alarm, ll_alarm, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "service_area,ul_alarm, ll_alarm,status, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		DELTMETERSQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
 	}
 	
@@ -36,6 +36,7 @@ public class MeterDaoImpl implements MeterDao {
 		String objectId = (!StringUtil.hasText(meter.getObjectId())) ? UUID.randomUUID().toString() : meter.getObjectId();
 		Object [] args = {objectId,meter.getBuildingId(),meter.getBuildingAreaId(),meter.getName(),meter.getNumber()
 				,meter.getType(),meter.getEnergyType(),meter.getServiceArea(),meter.getUlAlarm(),meter.getLlAlarm()
+				,meter.getStatus() != null ? meter.getStatus():1
 				,meter.getCreateUser(),meter.getCreateTime() != null ? meter.getCreateTime():new Date()
 				,meter.getModifyUser(),meter.getModifyTime() != null ? meter.getModifyTime():new Date()
 					,meter.getActive() != null ? meter.getActive() : 1,meter.getRemark() 	};
