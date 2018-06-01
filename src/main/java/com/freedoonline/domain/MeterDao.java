@@ -8,4 +8,6 @@ public interface MeterDao {
 	public String addMeter(Meter meter);
 	
 	public int delMeter(Map<String, Object> map);
+	
+	public int updateMeter(Meter meter);
 }

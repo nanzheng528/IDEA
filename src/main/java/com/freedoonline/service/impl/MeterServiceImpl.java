@@ -32,10 +32,13 @@ public class MeterServiceImpl implements MeterService {
 			throw new BusinessException("所属楼宇不能为空！", "403");
 		}
 		if (!StringUtil.hasText(meter.getBuildingAreaId())) {
-			throw new BusinessException("所属楼宇区域不能为空！", "403");
+			throw new BusinessException("位置不能为空！", "403");
 		}
 		if (!StringUtil.hasText(meter.getName())) {
 			throw new BusinessException("表计名称不能为空！", "403");
+		}
+		if (null == meter.getUnit()) {
+			throw new BusinessException("单位不能为空！", "403");
 		}
 		if (!StringUtil.hasText(meter.getNumber())) {
 			throw new BusinessException("表计编号不能为空！", "403");
@@ -64,6 +67,17 @@ public class MeterServiceImpl implements MeterService {
 			return true;
 		};
 		return false;
+	}
+
+	@Override
+	public int validMeterId(String objectId) throws BusinessException, Exception {
+		return 0;
+	}
+
+	@Override
+	public String updateMeter(Meter meter) throws BusinessException, Exception {
+		
+		return null;
 	}
 
 }
