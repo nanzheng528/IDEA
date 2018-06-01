@@ -1,7 +1,7 @@
 package com.freedoonline.common.response;
 
 public enum ResponseCode {
-	SUCCESS(0,"suceess"),
+	SUCCESS(0,"success"),
 	ERROR(-1,"error");
 	
 	private int code;
