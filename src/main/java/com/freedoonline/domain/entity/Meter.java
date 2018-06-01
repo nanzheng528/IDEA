@@ -28,6 +28,7 @@ public class Meter implements Serializable{
 	private String ulAlarm;				//上限警报值
 	private String llAlarm;				//下限警报值
 	private Integer status;				//运行状态
+	private Integer unit;				//单位
 	
 	private String createUser;
 	private Date createTime;
