@@ -27,7 +27,7 @@ public class Meter implements Serializable{
 	private String serviceArea;			//服务区域
 	private String ulAlarm;				//上限警报值
 	private String llAlarm;				//下限警报值
-	private Integer status;				//运行状态
+	private Integer status;				//运行状态 0:未运行   1:正在运行
 	private Integer unit;				//单位
 	
 	private String createUser;
