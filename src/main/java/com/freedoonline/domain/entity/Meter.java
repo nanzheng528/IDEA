@@ -44,6 +44,7 @@ public class Meter implements Serializable{
 	public void setNumber(String number) {
 		this.number = number;
 	}
+	
 //	public String getFloor() {
 //		return floor;
 //	}
@@ -57,6 +58,12 @@ public class Meter implements Serializable{
 //		this.location = location;
 //	}
 	
+	public Integer getUnit() {
+		return unit;
+	}
+	public void setUnit(Integer unit) {
+		this.unit = unit;
+	}
 	public String getUlAlarm() {
 		return ulAlarm;
 	}
