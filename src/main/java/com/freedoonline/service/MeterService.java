@@ -14,5 +14,5 @@ public interface MeterService {
 	
 	public int validMeterId(String objectId) throws BusinessException,Exception;
 	
-	public String updateMeter(Meter meter) throws BusinessException,Exception;
+	public Boolean updateMeter(Meter meter) throws BusinessException,Exception;
 }

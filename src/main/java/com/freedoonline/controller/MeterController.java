@@ -22,9 +22,11 @@ import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.MeterService;
+import com.netflix.infix.lang.infix.antlr.EventFilterParser.null_predicate_return;
 
 import cn.cloudlink.core.common.base.controller.BaseController;
 import cn.cloudlink.core.common.exception.BusinessException;
+import freemarker.core.ReturnInstruction.Return;
 
 @RestController
 @RequestMapping(value = "/meter")
@@ -43,14 +45,12 @@ public class MeterController extends BaseController{
 	@PostMapping("/addMeter")
 	public GuardRresponseMessage addMeter (HttpServletRequest request,@RequestBody Meter meter){
 		try {
-			ArrayList<String> arrayList = new ArrayList<String>();
 			User user = ThreadLocalHolder.getUser();
 			String creatUser = user.getObjectId();
 			meter.setCreateUser(creatUser);
 			meter.setModifyUser(creatUser);
 			meter.setEnpId(user.getEnpId());
 			String objectId = meterService.addMeter(meter);
-			arrayList.add(objectId);
 			logger.info("-----------添加Meter成功----------------");
 			return GuardRresponseMessage.creatBySuccessData(objectId);
 		} catch (BusinessException e) {
@@ -85,6 +85,31 @@ public class MeterController extends BaseController{
 			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
 		} catch (Exception e) {
 			logger.error("------删除metery失败----------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping("/updateMeter")
+	public GuardRresponseMessage updateMeter (HttpServletRequest request,@RequestBody Meter meter){
+		try {
+			User user = ThreadLocalHolder.getUser();
+			String creatUser = user.getObjectId();
+			meter.setModifyUser(creatUser);
+			if(meterService.updateMeter(meter)){
+				logger.info("-----------更新Meter成功----------------");
+				return GuardRresponseMessage.creatBySuccessMessage();
+			} else {
+				logger.info("-----------更新Meter数据库内容失败----------------");
+				return GuardRresponseMessage.creatByErrorMessage("400","更新失败");
+			}
+		} catch (BusinessException e) {
+			logger.error("------------更新metery业务失敗----------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			logger.error("------更新metery失败");
 			e.printStackTrace();
 			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
 		}

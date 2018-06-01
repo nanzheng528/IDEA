@@ -23,45 +23,56 @@ public class MeterDaoImpl implements MeterDao {
 	private static final Logger logger = LoggerFactory.getLogger(MeterController.class);
 	@Autowired
 	private BaseJdbcDao baseJdbcDao;
-    
+	
+	private static final int RUNSTATUS = 1;
+	private static final int UNRUNSTATUS = 0;
+	private static final int ACTIVE = 1;
+	private static final int UNACTIVE = 0;
+	
 	static String INSERTMETERSQL;
 	static String DELTMETERSQL;
 	static String UPDATESQL;
-	
-	static{
+
+	static {
 		INSERTMETERSQL = "INSERT INTO meter (object_id, building_id, building_area_id, name, number, type, energy_type,unit, "
 				+ "service_area,ul_alarm, ll_alarm,status, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		DELTMETERSQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
-		UPDATESQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
+		UPDATESQL = "update meter SET name  = ?,number = ?,type = ?,energy_type = ?,unit = ?,building_area_id = ?,ul_alarm =?,ll_alarm = ?,status = ?,"
+				+ "modify_user = ?,modify_time = ?"
+				+ "where object_id = ? and building_id = ?";
 	}
-	
 	public String addMeter(Meter meter) {
-		String objectId = (!StringUtil.hasText(meter.getObjectId())) ? UUID.randomUUID().toString() : meter.getObjectId();
-		Object [] args = {objectId,meter.getBuildingId(),meter.getBuildingAreaId(),meter.getName(),meter.getNumber()
-				,meter.getType(),meter.getEnergyType(),meter.getUnit(),meter.getServiceArea(),meter.getUlAlarm(),meter.getLlAlarm()
-				,meter.getStatus() != null ? meter.getStatus():1
-				,meter.getCreateUser(),meter.getCreateTime() != null ? meter.getCreateTime():new Date()
-				,meter.getModifyUser(),meter.getModifyTime() != null ? meter.getModifyTime():new Date()
-					,meter.getActive() != null ? meter.getActive() : 1,meter.getRemark() 	};
+		String objectId = (!StringUtil.hasText(meter.getObjectId())) ? UUID.randomUUID().toString()
+				: meter.getObjectId();
+		Object[] args = { objectId, meter.getBuildingId(), meter.getBuildingAreaId(), meter.getName(),
+				meter.getNumber(), meter.getType(), meter.getEnergyType(), meter.getUnit(), meter.getServiceArea(),
+				meter.getUlAlarm(), meter.getLlAlarm(), meter.getStatus() != null ? meter.getStatus() : 1,
+				meter.getCreateUser(), meter.getCreateTime() != null ? meter.getCreateTime() : new Date(),
+				meter.getModifyUser(), meter.getModifyTime() != null ? meter.getModifyTime() : new Date(),
+				meter.getActive() != null ? meter.getActive() : ACTIVE, meter.getRemark() };
 		baseJdbcDao.save(INSERTMETERSQL, args);
 		logger.info("-----------meterdao插入数据成功--------------");
 		return objectId;
-		
+
 	}
 
 	@Override
 	public int delMeter(Map<String, Object> map) {
-		Object [] args = {
-				0,map.get("modifyUser"),new Date(),map.get("objectId"),
-		};
-	return	baseJdbcDao.update(DELTMETERSQL, args);
+		Object[] args = { UNACTIVE, map.get("modifyUser"), new Date(), map.get("objectId"), };
+		return baseJdbcDao.update(DELTMETERSQL, args);
 
 	}
 
 	@Override
 	public int updateMeter(Meter meter) {
+		Object[] args = { 
+				meter.getName(), meter.getNumber(), meter.getType(), meter.getEnergyType(), meter.getUnit(),
+				meter.getBuildingAreaId(),meter.getUlAlarm(), meter.getLlAlarm(),meter.getStatus() != null ? meter.getStatus() : RUNSTATUS,
+				meter.getModifyUser(),meter.getModifyTime() != null ? meter.getModifyTime() : new Date(),
+				meter.getObjectId(),meter.getBuildingId()
+		};
+	return	baseJdbcDao.update(UPDATESQL, args);
 		
-		return 0;
 	}
 
 }
