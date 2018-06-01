@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Repository;
 
 import com.freedoonline.controller.MeterController;
@@ -25,17 +26,19 @@ public class MeterDaoImpl implements MeterDao {
     
 	static String INSERTMETERSQL;
 	static String DELTMETERSQL;
+	static String UPDATESQL;
 	
 	static{
-		INSERTMETERSQL = "INSERT INTO meter (object_id, building_id, building_area_id, name, number, type, energy_type, "
-				+ "service_area,ul_alarm, ll_alarm,status, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		INSERTMETERSQL = "INSERT INTO meter (object_id, building_id, building_area_id, name, number, type, energy_type,unit, "
+				+ "service_area,ul_alarm, ll_alarm,status, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		DELTMETERSQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
+		UPDATESQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
 	}
 	
 	public String addMeter(Meter meter) {
 		String objectId = (!StringUtil.hasText(meter.getObjectId())) ? UUID.randomUUID().toString() : meter.getObjectId();
 		Object [] args = {objectId,meter.getBuildingId(),meter.getBuildingAreaId(),meter.getName(),meter.getNumber()
-				,meter.getType(),meter.getEnergyType(),meter.getServiceArea(),meter.getUlAlarm(),meter.getLlAlarm()
+				,meter.getType(),meter.getEnergyType(),meter.getUnit(),meter.getServiceArea(),meter.getUlAlarm(),meter.getLlAlarm()
 				,meter.getStatus() != null ? meter.getStatus():1
 				,meter.getCreateUser(),meter.getCreateTime() != null ? meter.getCreateTime():new Date()
 				,meter.getModifyUser(),meter.getModifyTime() != null ? meter.getModifyTime():new Date()
@@ -53,6 +56,12 @@ public class MeterDaoImpl implements MeterDao {
 		};
 	return	baseJdbcDao.update(DELTMETERSQL, args);
 
+	}
+
+	@Override
+	public int updateMeter(Meter meter) {
+		
+		return 0;
 	}
 
 }
