@@ -94,23 +94,23 @@ public class MeterDaoImpl implements MeterDao {
 		args.add(meter.getEnpId());
 		StringBuffer selectSqlBuffer = new StringBuffer(SELECTSQL);
 		if (StringUtil.hasText(meter.getNumber())){
-			selectSqlBuffer.append("and m.number like ?");
+			selectSqlBuffer.append(" and m.number like ?");
 			args.add("%"+meter.getNumber()+"%");
 		}
 		if (StringUtil.hasText(meter.getName())){
-			selectSqlBuffer.append("m.name like ?");
+			selectSqlBuffer.append(" and m.name like ?");
 			args.add("%"+meter.getName()+"%");
 		}
 		if (meter.getType() != null){
-			selectSqlBuffer.append("m.name = ?");
+			selectSqlBuffer.append(" and m.type = ?");
 			args.add(meter.getType());
 		}
 		if (meter.getEnergyType() != null){
-			selectSqlBuffer.append("and m.energy_type like ?");
+			selectSqlBuffer.append(" and m.energy_type like ?");
 			args.add("%"+meter.getEnergyType()+"%");
 		}
 		if (StringUtil.hasText(meter.getBuildingAreaId())){
-			selectSqlBuffer.append("and m.building_area_id = ?");
+			selectSqlBuffer.append(" and m.building_area_id = ?");
 			args.add(meter.getBuildingAreaId());
 		}
 		Page<Meter> queryPage = baseJdbcDao.queryPage(pageRequest, selectSqlBuffer.toString(), args.toArray(), Meter.class);
