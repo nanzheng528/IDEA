@@ -6,15 +6,16 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.freedoonline.controller.MeterController;
 import com.freedoonline.domain.MeterDao;
 import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.service.MeterService;
-import com.google.inject.grapher.graphviz.EdgeStyle;
+import com.freedoonline.service.bo.MeterBo;
 
+import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
 import cn.cloudlink.core.common.utils.StringUtil;
 
@@ -111,6 +112,12 @@ public class MeterServiceImpl implements MeterService {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public Page<Meter> queryMeter(PageRequest pageRequest, MeterBo meter) {
+		logger.info("--------------开始查询meter数据业务----------------");
+		return MeterDao.queryMeterData(pageRequest, meter);
 	}
 
 }

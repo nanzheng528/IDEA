@@ -22,9 +22,13 @@ import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.MeterService;
+import com.freedoonline.service.bo.MeterBo;
 import com.netflix.infix.lang.infix.antlr.EventFilterParser.null_predicate_return;
 
 import cn.cloudlink.core.common.base.controller.BaseController;
+import cn.cloudlink.core.common.dataaccess.data.ControllerResult;
+import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
 import freemarker.core.ReturnInstruction.Return;
 
@@ -109,7 +113,30 @@ public class MeterController extends BaseController{
 			e.printStackTrace();
 			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
 		} catch (Exception e) {
-			logger.error("------更新metery失败");
+			logger.error("------更新metery失败--------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
+		}
+	}
+	
+	@PostMapping("/queryMeterList")
+	public Object queryMeter(HttpServletRequest request,@RequestBody MeterBo meter){
+		try {
+			String enpId = ThreadLocalHolder.getUser().getEnpId();
+			meter.setEnpId(enpId);
+			PageRequest pageRequest = new PageRequest(meter.getPageNum(), meter.getPageSize(), meter.getOrderBy(), meter.isCountTotal());
+			Page<Meter> queryMeter = meterService.queryMeter(pageRequest, meter);
+			Integer totalPages = (int) Math.ceil(queryMeter.getTotalLength()*1.0/pageRequest.getPageSize());
+			return new ControllerResult(1, "200", "ok", (int)queryMeter.getTotalLength(), totalPages, queryMeter.getPageSize(), 
+					queryMeter.getPageNum(), queryMeter.getPageNum() == 1,
+					queryMeter.getPageNum() == totalPages, queryMeter.getResult());
+			
+		} catch (BusinessException e) {
+			logger.error("------------查询metery业务失敗----------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			logger.error("------查询metery失败-------");
 			e.printStackTrace();
 			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
 		}
