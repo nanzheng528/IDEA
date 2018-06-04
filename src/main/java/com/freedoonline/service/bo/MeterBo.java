@@ -1,19 +1,11 @@
-package com.freedoonline.domain.entity;
+package com.freedoonline.service.bo;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 
-/**
-  * 
-  *<p>类描述：万用表。</p>
-  * @author 刘建雨。
-  * @version v1.0。
-  * @since JDK1.8。
-  *<p>创建日期：2018年5月8日 下午3:39:17。</p>
- */
-public class Meter implements Serializable {
+public class MeterBo extends PageRequest implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
