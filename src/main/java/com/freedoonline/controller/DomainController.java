@@ -1,6 +1,5 @@
 package com.freedoonline.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.freedoonline.common.interceptor.ThreadLocalHolder;
 import com.freedoonline.common.response.GuardRresponseMessage;
-import com.freedoonline.service.BuildingService;
 import com.freedoonline.service.DomainService;
 
 import cn.cloudlink.core.common.dataaccess.data.BusinessResult;
