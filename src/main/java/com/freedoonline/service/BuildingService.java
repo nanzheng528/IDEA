@@ -20,5 +20,6 @@ public interface BuildingService {
 	public Object addBuildingArea(BuildingArea buildingArea) throws BusinessException,Exception;
 	// 查询楼宇区域列表
 	public Object queryBuildingArea(PageRequest pageRequest,BuildingArea buildingArea) throws BusinessException,Exception;
-	
+	//
+	public String updateBuildingArea(Map<String,Object> paramMap) throws BusinessException,Exception;
 }

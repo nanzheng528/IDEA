@@ -1,7 +1,6 @@
 package com.freedoonline.domain;
 
 import java.util.List;
-import java.util.Map;
 
 import com.freedoonline.domain.entity.Building;
 import com.freedoonline.domain.entity.BuildingArea;
@@ -19,4 +18,6 @@ public interface BuildingDao {
 	public Object addBuildingArea(BuildingArea buildingArea);
 	// 查询楼宇区域列表
 	public Object queryBuildingArea(PageRequest pageRequest,BuildingArea buildingArea);
+	// 根据ID查询设备
+	public BuildingArea queryBaById(String objectId,String enpId);
 }

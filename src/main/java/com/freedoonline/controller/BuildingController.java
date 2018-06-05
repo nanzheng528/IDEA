@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.freedoonline.common.interceptor.ThreadLocalHolder;
+import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.Building;
 import com.freedoonline.domain.entity.BuildingArea;
 import com.freedoonline.domain.entity.Equipment;
@@ -187,6 +188,33 @@ public class BuildingController {
 			Integer totalPages = (int) Math.ceil(resultPage.getTotalLength()*1.0/pageRequest.getPageSize());
 			ControllerResult cResult = new ControllerResult(1, "200", "ok", (int) resultPage.getTotalLength(), totalPages, resultPage.getPageSize(), resultPage.getPageNum(), resultPage.getPageNum()==1, resultPage.getPageNum()==totalPages, resultPage.getResult());
 			return cResult;
+		}catch(BusinessException e){
+			return new BusinessResult(-1, e.getCode(), e.getMessage());
+		}catch(Exception e){
+			return new BusinessResult(-1, "400", e.getMessage());
+		}
+	}
+	
+	/**
+	  * 
+	  * <p>功能描述：区域更新。</p>
+	  * <p> 刘建雨。</p>	
+	  * @param request
+	  * @param paramMap
+	  * @return
+	  * @since JDK1.8。
+	  * <p>创建日期:2018年6月5日 上午6:41:44。</p>
+	  * <p>更新日期:[日期YYYY-MM-DD][更改人姓名][变更描述]。</p>
+	  */
+	@PostMapping(value="updateBuildingArea")
+	public Object update(HttpServletRequest request,@RequestBody Map<String,Object> paramMap){
+		try{
+			User userBo = ThreadLocalHolder.getUser();
+			paramMap.put("modifyUser", userBo.getObjectId());
+			paramMap.put("enpId", userBo.getEnpId());
+			
+			String objectId = (String)buildingService.updateBuildingArea(paramMap);
+			return GuardRresponseMessage.creatBySuccessData(objectId);
 		}catch(BusinessException e){
 			return new BusinessResult(-1, e.getCode(), e.getMessage());
 		}catch(Exception e){

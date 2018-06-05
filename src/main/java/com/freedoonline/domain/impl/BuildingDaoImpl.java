@@ -156,4 +156,12 @@ public class BuildingDaoImpl implements BuildingDao {
 		resultMap.put("args", args.toArray());
 		return resultMap;
 	}
+	
+	@Override
+	public BuildingArea queryBaById(String objectId, String enpId) {
+		StringBuffer buffer = new StringBuffer(SELECT_BUILDING_AREA_SQL);
+		buffer.append(" WHERE ba.object_id=? AND ba.enp_id=? AND ba.active=1 ");
+		Object[] args = {objectId,enpId};
+		return (BuildingArea)baseJdbcDao.queryForObject(buffer.toString(), args, BuildingArea.class);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +13,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.freedoonline.common.util.TransformUtil;
 import com.freedoonline.domain.BuildingDao;
 import com.freedoonline.domain.entity.Building;
 import com.freedoonline.domain.entity.BuildingArea;
 import com.freedoonline.service.BuildingService;
+import com.freedoonline.service.ICommonService;
 import com.freedoonline.service.bo.BuildingFloorBo;
 import com.freedoonline.service.bo.EnergyBo;
 
@@ -28,6 +31,9 @@ public class BuildingServiceImpl implements BuildingService {
 	
 	@Resource(name = "buildingDaoImpl")
 	private BuildingDao buildingDao;
+	
+	@Resource(name = "commonServiceImpl")
+	private ICommonService commonService;
 
 	@Override
 	public List<Building> infoAll(String objectId) throws BusinessException, Exception {
@@ -101,8 +107,49 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public Object queryBuildingArea(PageRequest pageRequest,BuildingArea buildingArea) throws BusinessException, Exception {
 		if (!StringUtil.hasText(buildingArea.getBuildingId())) {
-			throw new BusinessException("区域名称不能为空！", "403");
+			throw new BusinessException("楼宇ID不能为空！", "403");
 		}
 		return buildingDao.queryBuildingArea(pageRequest,buildingArea);
+	}
+	
+	@Override
+	public String updateBuildingArea(Map<String, Object> paramMap) throws BusinessException, Exception {
+		String objectId = (String) paramMap.get("objectId");
+		String enpId = (String) paramMap.get("enpId");
+		paramMap.remove("objectId");
+		paramMap.remove("createUser");
+		paramMap.remove("createTime");
+		paramMap.remove("modifyTime");
+		//paramMap.remove("active");
+		paramMap.remove("enpId");
+		
+		if (paramMap.size() == 0) {
+			throw new BusinessException("要更新的数据不存在！", "403");
+		}
+		
+		BuildingArea buildingArea = buildingDao.queryBaById(objectId,enpId);
+		
+		if (null == buildingArea) {
+			throw new BusinessException("楼宇区域数据不存在！", "403");
+		}
+		List<String> columnNames = new ArrayList<String>();
+		List<Object> columnValues = new ArrayList<Object>();
+		for (String key : paramMap.keySet()) {
+			columnNames.add(TransformUtil.humpToLine2(key)); // 将驼峰命名转换为下划线
+			columnValues.add(paramMap.get(key));
+		}
+		columnNames.add("modify_time");
+		columnValues.add(new Date());
+		this.update(columnNames.toArray(new String[columnNames.size()]), columnValues.toArray(),
+				new String[] { "object_id" }, new Object[] { objectId }, null,"building_area");
+		return objectId;
+		
+	}
+	
+	public boolean update(String[] columnNames, Object[] columnValues, String[] whereNames, Object[] whereValues,
+			String whereFilter,String tableName) throws BusinessException, Exception {
+		boolean updateResult = commonService.updateColumns(tableName, columnNames, columnValues, whereNames, whereValues,
+				whereFilter);
+		return updateResult;
 	}
 }
