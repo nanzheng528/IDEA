@@ -32,6 +32,7 @@ public class UserDaoImpl implements UserDao{
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id from user ";
+		
 		INSERT_USER_SQL = " INSERT INTO user (object_id, account, emp_id,department_id,position_id,address,building_id,superior_id,enp_id,user_name, password, mobile_num,main_mobile_num,language,sex,birthday,emp_date,emp_end_date,approval_limits,id_card,job,is_outsourcing, email, status, profile_photo,role_id, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	

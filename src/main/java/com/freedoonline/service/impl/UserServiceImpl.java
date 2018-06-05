@@ -197,8 +197,8 @@ public class UserServiceImpl implements UserService{
 		paramMap.remove("createUser");
 		paramMap.remove("createTime");
 		paramMap.remove("modifyTime");
-		paramMap.remove("active");
-		paramMap.remove("status");
+		//paramMap.remove("active");
+		//paramMap.remove("status");
 		if(paramMap.size()==0){
 			return objectId;
 		}
@@ -215,8 +215,10 @@ public class UserServiceImpl implements UserService{
 		}
 		columnNames.add("modify_time");
 		columnValues.add(new Date());
-		this.updateUser(columnNames.toArray(new String[columnNames.size()]),columnValues.toArray(),
-				new String[]{"object_id"},new Object[]{objectId},null);
+		if(this.updateUser(columnNames.toArray(new String[columnNames.size()]),columnValues.toArray(),
+				new String[]{"object_id"},new Object[]{objectId},null)== true ){
+			return objectId;
+		};
 		return null;
 	}
 	

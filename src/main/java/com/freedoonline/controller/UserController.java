@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.freedoonline.common.interceptor.ThreadLocalHolder;
+import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.UserService;
 
@@ -91,21 +93,21 @@ public class UserController {
 			if(!StringUtil.hasText(objectId)){
 	    		return new BusinessResult(-1, "403", "用户ID不能为空！");
 			}
-			paramMap.remove("objectId");
+			//paramMap.remove("objectId");
 			if(paramMap.isEmpty()){
 				return new BusinessResult(-1, "403", "要更新的字段不能为空！");
 			}
-			paramMap.put("objectId", objectId);
+			//paramMap.put("objectId", objectId);
 			//从当前线程中获取登录的用户
 			User userBo = ThreadLocalHolder.getUser();
 			paramMap.put("modifyUser", userBo.getObjectId());
-			userService.updateUser(paramMap);
-			Map<String,Object> dataMap = new HashMap<String,Object>();
-			User user = (User)userService.validateUser(objectId);
-			dataMap.put("val", user);
-			dataMap.put("msg", "success");
-			dataMap.put("stat", 0);
-			return dataMap;
+			return GuardRresponseMessage.creatBySuccessData(userService.updateUser(paramMap));
+//			Map<String,Object> dataMap = new HashMap<String,Object>();
+//			User user = (User)userService.validateUser(objectId1);
+//			dataMap.put("val", user);
+//			dataMap.put("msg", "success");
+//			dataMap.put("stat", 0);
+//			return dataMap;
 		}catch(BusinessException e){
 			return new BusinessResult(-1, e.getCode(), e.getMessage());
 		}catch(Exception e){
