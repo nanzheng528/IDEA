@@ -1,6 +1,5 @@
 package com.freedoonline.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,14 +22,12 @@ import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.MeterService;
 import com.freedoonline.service.bo.MeterBo;
-import com.netflix.infix.lang.infix.antlr.EventFilterParser.null_predicate_return;
 
 import cn.cloudlink.core.common.base.controller.BaseController;
 import cn.cloudlink.core.common.dataaccess.data.ControllerResult;
 import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
-import freemarker.core.ReturnInstruction.Return;
 
 @RestController
 @RequestMapping(value = "/meter")
@@ -137,6 +134,22 @@ public class MeterController extends BaseController{
 			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
 		} catch (Exception e) {
 			logger.error("------查询metery失败-------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping("/queryPosition")
+	public GuardRresponseMessage queryMeter(HttpServletRequest request,@RequestBody Map<String, Object> queryMap){
+		try {
+			return GuardRresponseMessage.creatBySuccessData(meterService.queryPosition(queryMap));
+		} catch (BusinessException e) {
+			logger.error("------------查询位置业务失敗----------");
+			e.printStackTrace();
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			logger.error("------查询位置失败-------");
 			e.printStackTrace();
 			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
 		}

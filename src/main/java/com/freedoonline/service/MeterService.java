@@ -1,5 +1,6 @@
 package com.freedoonline.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.freedoonline.domain.entity.Meter;
@@ -20,4 +21,6 @@ public interface MeterService {
 	public Boolean updateMeter(Meter meter) throws BusinessException,Exception;
 	
 	public Page<Meter> queryMeter(PageRequest pageRequest,MeterBo meter);
+	
+	public List queryPosition(Map<String, Object> searchMap);
 }

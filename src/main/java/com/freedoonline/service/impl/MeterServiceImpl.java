@@ -1,5 +1,6 @@
 package com.freedoonline.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -51,9 +52,14 @@ public class MeterServiceImpl implements MeterService {
 		if (null == meter.getEnergyType()) {
 			throw new BusinessException("能耗类别不能为空！", "403");
 		}
-		if (!StringUtil.hasText(meter.getServiceArea())){
-			throw new BusinessException("服务区域不能为空！", "403");
+		if (null == meter.getUlAlarm()) {
+			throw new BusinessException("上限警报值不能为空！", "403");
+		}if (null == meter.getLlAlarm()) {
+			throw new BusinessException("下限警报值不能为空！", "403");
 		}
+//		if (!StringUtil.hasText(meter.getServiceArea())){
+//			throw new BusinessException("服务区域不能为空！", "403");
+//		}
 		String Objectid = MeterDao.addMeter(meter);
 		logger.info("-------添加meter数据成功----------");
 		return Objectid;
@@ -103,9 +109,14 @@ public class MeterServiceImpl implements MeterService {
 		if (null == meter.getEnergyType()) {
 			throw new BusinessException("能耗类别不能为空！", "403");
 		}
-		if (!StringUtil.hasText(meter.getServiceArea())){
-			throw new BusinessException("服务区域不能为空！", "403");
+		if (null == meter.getUlAlarm()) {
+			throw new BusinessException("上限警报值不能为空！", "403");
+		}if (null == meter.getLlAlarm()) {
+			throw new BusinessException("下限警报值不能为空！", "403");
 		}
+//		if (!StringUtil.hasText(meter.getServiceArea())){
+//			throw new BusinessException("服务区域不能为空！", "403");
+//		}
 		int result = MeterDao.updateMeter(meter);
 		if (result == 1){
 			return true;
@@ -119,5 +130,11 @@ public class MeterServiceImpl implements MeterService {
 		logger.info("--------------开始查询meter数据业务----------------");
 		return MeterDao.queryMeterData(pageRequest, meter);
 	}
+
+	@Override
+	public List queryPosition(Map<String,Object> searchMap) {
+		return  MeterDao.queryPosition(searchMap);
+	}
+
 
 }

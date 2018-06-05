@@ -3,8 +3,6 @@ package com.freedoonline.domain.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import cn.cloudlink.core.common.dataaccess.data.PageRequest;
-
 /**
   * 
   *<p>类描述：万用表。</p>

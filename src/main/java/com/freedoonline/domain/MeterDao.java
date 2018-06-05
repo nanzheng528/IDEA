@@ -1,5 +1,6 @@
 package com.freedoonline.domain;
 
+import java.util.List;
 import java.util.Map;
 
 import com.freedoonline.domain.entity.Meter;
@@ -16,4 +17,7 @@ public interface MeterDao {
 	public int updateMeter(Meter meter);
 	
 	public Page<Meter> queryMeterData(PageRequest pageRequest,MeterBo meter); 
+	
+	public List queryPosition(Map<String,Object> searchMap);
+	
 }

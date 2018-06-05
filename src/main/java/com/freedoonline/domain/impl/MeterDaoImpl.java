@@ -1,16 +1,14 @@
 package com.freedoonline.domain.impl;
 
-import java.nio.channels.SelectableChannel;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Repository;
 
 import com.freedoonline.controller.MeterController;
@@ -18,7 +16,6 @@ import com.freedoonline.domain.MeterDao;
 import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.service.bo.MeterBo;
 
-import antlr.collections.List;
 import cn.cloudlink.core.common.dataaccess.BaseJdbcDao;
 import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
@@ -40,6 +37,8 @@ public class MeterDaoImpl implements MeterDao {
 	static String DELTMETERSQL;
 	static String UPDATESQL;
 	static String SELECTSQL;
+	static String SELECTBUIDINGSQL;
+	static String SELECTBUIDINGAREASQL;
 
 	static {
 		INSERTMETERSQL = "INSERT INTO meter (object_id, building_id, building_area_id, name, number, type, energy_type,unit, "
@@ -49,6 +48,8 @@ public class MeterDaoImpl implements MeterDao {
 				+ "modify_user = ?,modify_time = ?" + "where object_id = ? and building_id = ?";
 		SELECTSQL = "select m.number, m.name, m.type, m.building_area_id, m.status ,m.object_id, b.enp_id" +
 				" from meter m left join  building b on m.building_id = b.object_id where b.enp_id = ? and m.active = '1'";
+		SELECTBUIDINGSQL = "select distinct(a.building_id),b.building_name from building_area a left join building b  on  a.building_id = b.object_id";
+		SELECTBUIDINGAREASQL = "select a.object_id,a.building_id, a.area_name, a.area_type , a.floor, b.building_name from building_area a left join building b on  a.building_id = b.object_id  where 1= 1 "; 
 	}
 
 	public String addMeter(Meter meter) {
@@ -115,6 +116,27 @@ public class MeterDaoImpl implements MeterDao {
 		}
 		Page<Meter> queryPage = baseJdbcDao.queryPage(pageRequest, selectSqlBuffer.toString(), args.toArray(), Meter.class);
 		return queryPage;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List queryPosition(Map<String, Object> searchMap) {
+		//查询条件
+		ArrayList<Object> args = new ArrayList<>();
+		//查询语句
+		StringBuffer stringBufferSql = new StringBuffer(SELECTBUIDINGAREASQL);
+		if(StringUtil.hasText((String)searchMap.get("buildingId"))&&!StringUtil.hasText((String)searchMap.get("floor"))){
+			String selectBuildingFloorSql = "select DISTINCT(floor) from building_area where building_id = ?";
+			args.add(searchMap.get("buildingId"));
+			return   baseJdbcDao.queryForListMap(selectBuildingFloorSql, args.toArray());
+		}
+		if(StringUtil.hasText((String)searchMap.get("buildingId"))&&StringUtil.hasText((String)searchMap.get("floor"))){
+			stringBufferSql.append(" and a.building_id = ?  and a.floor = ? ");
+			args.add(searchMap.get("buildingId"));
+			args.add(searchMap.get("floor"));
+			return baseJdbcDao.queryForListMap(stringBufferSql.toString(), args.toArray());
+		}
+		return  baseJdbcDao.queryForListMap(SELECTBUIDINGSQL,args.toArray() );
 	}
 	
 	
