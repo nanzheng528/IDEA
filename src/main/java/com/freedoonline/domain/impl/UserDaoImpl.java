@@ -1,6 +1,7 @@
 package com.freedoonline.domain.impl;
 
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserDaoImpl implements UserDao{
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id from user ";
-		INSERT_USER_SQL = " INSERT INTO user (object_id, user_name, password, mobile_num, email, status, profile_photo, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+		INSERT_USER_SQL = " INSERT INTO user (object_id, account, emp_id,department_id,position_id,address,building_id,superior_id,enp_id,user_name, password, mobile_num,main_mobile_num,language,sex,birthday,emp_date,emp_end_date,approval_limits,id_card,job,is_outsourcing, email, status, profile_photo,role_id, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	
 	/**
@@ -88,8 +89,16 @@ public class UserDaoImpl implements UserDao{
 		String objectId = StringUtil.hasText(user.getObjectId())?user.getObjectId():UUID.randomUUID().toString();
 		user.setActive(1);
 		user.setStatus(1);
+		user.setRoleId(2);
 		try {
-			user.setPassword(CryptUtil.md5Encrypt(user.getPassword()));
+			//如果密码为空，则用随机生成的uuid的前8位作为密码
+			if(!StringUtil.hasText(user.getPassword())){
+				String[] randomPassword = UUID.randomUUID().toString().split("-");
+				user.setPassword(CryptUtil.md5Encrypt(randomPassword[0]));
+			} else{
+				//密码不为空，设置为md5加密的密码
+				user.setPassword(CryptUtil.md5Encrypt(user.getPassword()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,7 +106,13 @@ public class UserDaoImpl implements UserDao{
 		user.setModifyTime(user.getModifyTime()!=null?user.getModifyTime():new Date());
 		user.setCreateUser(user.getCreateUser()!=null?user.getCreateUser():objectId);
 		user.setModifyUser(user.getModifyUser()!=null?user.getModifyUser():objectId);
-		Object[] args=  {objectId,user.getUserName(),user.getPassword(),user.getMobileNum(),user.getEmail(),user.getStatus(),user.getProfilePhoto(),user.getCreateUser(),user.getCreateTime(),user.getModifyUser(),user.getModifyTime(),user.getActive(),user.getRemark()};
+		Object[] args=  {objectId,user.getAccount(),user.getEmpId(),user.getDepartmentId(),user.getPositionId()
+				,user.getAddress(),user.getBuildingId(),user.getSuperiorId(),user.getEnpId(),user.getUserName()
+				,user.getPassword(),user.getMobileNum(),user.getMainMobileNum(),user.getLanguage(),user.getSex()
+				,user.getBirthday(),user.getEmpDate(),user.getEmpEndDate(),user.getApprovalLimits(),user.getIdCard()
+				,user.getJob(),user.getIsOutsourcing() == null ? 0 : user.getIsOutsourcing(),user.getEmail(),user.getStatus()
+				,user.getProfilePhoto(),user.getRoleId(),user.getCreateUser(),user.getCreateTime(),user.getModifyUser()
+				,user.getModifyTime(),user.getActive(),user.getRemark()};
 		baseJdbcDao.save(INSERT_USER_SQL, args);
 		return objectId;
 	}

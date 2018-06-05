@@ -130,8 +130,32 @@ public class UserServiceImpl implements UserService{
 				throw new BusinessException("手机号码已注册！","403");
 			}
 		}
-		if(!StringUtil.hasText(user.getPassword())){
-    		throw new BusinessException("用户密码不能为空！","403");
+		if(!StringUtil.hasText(user.getUserName())){
+    		throw new BusinessException("姓名不能为空！","403");
+		}
+		if(!StringUtil.hasText(user.getEmpId())){
+    		throw new BusinessException("员工工号不能为空！","403");
+		}
+		if(!StringUtil.hasText(user.getDepartmentId())){
+    		throw new BusinessException("员工部门不能为空！","403");
+		}
+		if(!StringUtil.hasText(user.getBuildingId())){
+    		throw new BusinessException("工作楼盘不能为空！","403");
+		}
+		if(!StringUtil.hasText(user.getSuperiorId())){
+    		throw new BusinessException("直接主管不能为空！","403");
+		}
+		if(!StringUtil.hasText(user.getSex())){
+    		throw new BusinessException("性别不能为空！","403");
+		}
+		if(null == user.getEmpDate()){
+    		throw new BusinessException("聘用日期不能为空！","403");
+		}
+		if(!StringUtil.hasText(user.getIdCard())){
+    		throw new BusinessException("身份证不能为空！","403");
+		}
+		if(null == user.getRoleId().toString()){
+    		throw new BusinessException("权限不能为空！","403");
 		}
 		if(!StringUtil.hasText(user.getEmail())){
     		throw new BusinessException("邮箱不能为空！","403");
