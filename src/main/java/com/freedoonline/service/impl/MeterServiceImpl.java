@@ -119,6 +119,7 @@ public class MeterServiceImpl implements MeterService {
 //		}
 		int result = MeterDao.updateMeter(meter);
 		if (result == 1){
+			
 			return true;
 		} else {
 			return false;

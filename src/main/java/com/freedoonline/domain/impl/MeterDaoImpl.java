@@ -37,7 +37,6 @@ public class MeterDaoImpl implements MeterDao {
 	static String DELTMETERSQL;
 	static String UPDATESQL;
 	static String SELECTSQL;
-	static String SELECTBUIDINGSQL;
 	static String SELECTBUIDINGAREASQL;
 
 	static {
@@ -45,11 +44,9 @@ public class MeterDaoImpl implements MeterDao {
 				+ "service_area,ul_alarm, ll_alarm,status, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		DELTMETERSQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
 		UPDATESQL = "update meter SET name  = ?,number = ?,type = ?,energy_type = ?,unit = ?,building_area_id = ?,ul_alarm =?,ll_alarm = ?,status = ?,"
-				+ "modify_user = ?,modify_time = ?" + "where object_id = ? and building_id = ?";
-		SELECTSQL = "select m.number, m.name, m.type, m.building_area_id, m.status ,m.object_id, b.enp_id" +
-				" from meter m left join  building b on m.building_id = b.object_id where b.enp_id = ? and m.active = '1'";
-		SELECTBUIDINGSQL = "select distinct(a.building_id),b.building_name from building_area a left join building b  on  a.building_id = b.object_id";
-		SELECTBUIDINGAREASQL = "select a.object_id,a.building_id, a.area_name, a.area_type , a.floor, b.building_name from building_area a left join building b on  a.building_id = b.object_id  where 1= 1 "; 
+				+ "modify_user = ?,modify_time = ?" + " where object_id = ? and building_id = ?";
+		SELECTSQL = "select m.number, m.name, m.type as type, m.building_area_id, m.status , m.object_id , t.value as type_value , t.value_en as type_value_en,a.area_name, b.enp_id from meter m left join  building b on m.building_id = b.object_id left join (select code ,value , value_en from domain_table where domain_name = 'meter_type') t on t.code = m.type  left join (select code,value ,value_en from domain_table where domain_name = 'ec_type_1' or domain_name = 'ec_type_2') e on e.code = m.energy_type left join building_area a on a.object_id = m.building_area_id where b.enp_id = ? and m.active = '1'";
+		SELECTBUIDINGAREASQL = "select object_id , area_name from  building_area where 1 = 1 "; 
 	}
 
 	public String addMeter(Meter meter) {
@@ -125,20 +122,13 @@ public class MeterDaoImpl implements MeterDao {
 		ArrayList<Object> args = new ArrayList<>();
 		//查询语句
 		StringBuffer stringBufferSql = new StringBuffer(SELECTBUIDINGAREASQL);
-		if(StringUtil.hasText((String)searchMap.get("buildingId"))&&!StringUtil.hasText((String)searchMap.get("floor"))){
-			String selectBuildingFloorSql = "select DISTINCT(floor) from building_area where building_id = ?";
-			args.add(searchMap.get("buildingId"));
-			return   baseJdbcDao.queryForListMap(selectBuildingFloorSql, args.toArray());
+		if(!StringUtil.hasText((String)searchMap.get("objectId"))){
+			stringBufferSql.append(" and parent_id is null");
 		}
-		if(StringUtil.hasText((String)searchMap.get("buildingId"))&&StringUtil.hasText((String)searchMap.get("floor"))){
-			stringBufferSql.append(" and a.building_id = ?  and a.floor = ? ");
-			args.add(searchMap.get("buildingId"));
-			args.add(searchMap.get("floor"));
-			return baseJdbcDao.queryForListMap(stringBufferSql.toString(), args.toArray());
+		if(StringUtil.hasText((String)searchMap.get("objectId"))){
+			stringBufferSql.append(" and parent_id = ?");
+			args.add(searchMap.get("objectId"));
 		}
-		return  baseJdbcDao.queryForListMap(SELECTBUIDINGSQL,args.toArray() );
+		return baseJdbcDao.queryForListMap(stringBufferSql.toString(),args.toArray() );
 	}
-	
-	
-
 }

@@ -29,6 +29,10 @@ public class Meter implements Serializable {
 	private String llAlarm;				//下限警报值
 	private Integer status;				//运行状态 0:未运行   1:正在运行
 	private Integer unit;				//单位
+	private String typeValue;  			//表计类型值
+	private String typeValueEn; 		//表计类型英文
+	private String areaName ; 			//区域名称
+	
 	
 	private String createUser;
 	private Date createTime;
@@ -38,6 +42,26 @@ public class Meter implements Serializable {
 	private Integer active;
 	private String enpId;
 	
+	
+	
+	public String getTypeValue() {
+		return typeValue;
+	}
+	public void setTypeValue(String typeValue) {
+		this.typeValue = typeValue;
+	}
+	public String getTypeValueEn() {
+		return typeValueEn;
+	}
+	public void setTypeValueEn(String typeValueEn) {
+		this.typeValueEn = typeValueEn;
+	}
+	public String getAreaName() {
+		return areaName;
+	}
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
 	public String getNumber() {
 		return number;
 	}
