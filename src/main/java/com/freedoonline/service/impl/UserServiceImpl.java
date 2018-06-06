@@ -230,8 +230,9 @@ public class UserServiceImpl implements UserService{
 				whereNames, whereValues, whereFilter);
 		return updateResult;
 	}
+	
 	@Override
 	public Page queryUserList(PageRequest pageRequest,User user) throws BusinessException, Exception {
-		return null ;
+		return userDao.queryUserList(pageRequest, user);
 	}
 }

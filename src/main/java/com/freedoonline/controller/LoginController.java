@@ -100,6 +100,7 @@ public class LoginController extends BaseController{
 			User userBo = ThreadLocalHolder.getUser();
 			if( userBo != null ){
 				//从当前线程中获取登录的用户
+				user.setEnpId(userBo.getEnpId());//设置当前添加人的企业
 				user.setCreateUser(userBo.getObjectId());//设置创建人
 				user.setModifyUser(userBo.getObjectId());//设置修改人
 			}

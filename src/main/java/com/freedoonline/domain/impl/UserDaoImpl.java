@@ -1,8 +1,10 @@
 package com.freedoonline.domain.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import org.mockito.exceptions.verification.NeverWantedButInvoked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,11 +32,11 @@ public class UserDaoImpl implements UserDao{
 	private BaseJdbcDao baseJdbcDao;
 	static String SELECT_USER_SQL = "";
 	static String INSERT_USER_SQL = "";
-	static String SELECTSQL;
+	static String SELECTSQL = "";
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id from user ";
-		SELECTSQL = "";
+		SELECTSQL = "select u.object_id, u.account, u.emp_id,u.department_id,u.position_id,u.user_name, u.status ,u.enp_id ,b.building_name ,e.enterprise_name from user  u left join building b on u.building_id = b.object_id left join enterprise e on e.object_id = u.enp_id  where u.active = '1'";
 		INSERT_USER_SQL = " INSERT INTO user (object_id, account, emp_id,department_id,position_id,address,building_id,superior_id,enp_id,user_name, password, mobile_num,main_mobile_num,language,sex,birthday,emp_date,emp_end_date,approval_limits,id_card,job,is_outsourcing, email, status, profile_photo,role_id, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	
@@ -141,6 +143,55 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public Page queryUserList(PageRequest pageRequest, User user) {
-		return null;
+		if(!StringUtil.hasText(pageRequest.getOrderBy())){
+			pageRequest.setOrderBy("u.emp_id");
+		}
+		StringBuffer buffer = new StringBuffer(SELECTSQL);
+		ArrayList<Object> args = new ArrayList<>();
+		if(StringUtil.hasText(user.getObjectId())){
+			buffer.append(" and u.object_id = ?");
+			args.add(user.getObjectId());
+		}
+		if(StringUtil.hasText(user.getAccount())){
+			buffer.append(" and u.account like ?");
+			args.add("%"+user.getAccount()+"%");
+		}
+		if(StringUtil.hasText(user.getMobileNum())){
+			buffer.append(" and u.mobile_num like ?");
+			args.add("%"+user.getMobileNum()+"%");
+		}
+		if(StringUtil.hasText(user.getPositionId())){
+			buffer.append(" and u.position_id = ?");
+			args.add(user.getPositionId());
+		}
+		if(StringUtil.hasText(user.getDepartmentId())){
+			buffer.append(" and u.department_id = ?");
+			args.add(user.getDepartmentId());
+		}
+		if(StringUtil.hasText(user.getUserName())){
+			buffer.append(" and u.user_name like ?");
+			args.add("%"+user.getUserName()+"%");
+		}
+		if(StringUtil.hasText(user.getEmail())){
+			buffer.append(" and u.email like ?");
+			args.add("%"+user.getEmail()+"%");
+		}
+		if(StringUtil.hasText(user.getAddress())){
+			buffer.append(" and u.address like ?");
+			args.add("%"+user.getAddress()+"%");
+		}
+		if(StringUtil.hasText(user.getSuperiorId())){
+			buffer.append(" and u.superior_id like ?");
+			args.add("%"+user.getSuperiorId()+"%");
+		}
+		if(StringUtil.hasText(user.getEmpId())){
+			buffer.append(" and u.emp_id like ?");
+			args.add("%"+user.getEmpId()+"%");
+		}
+		if(StringUtil.hasText(user.getEnpId())){
+			buffer.append(" and u.enp_id like ?");
+			args.add("%"+user.getEnpId()+"%");
+		}
+		return baseJdbcDao.queryPageMap(pageRequest, buffer.toString(), args.toArray());
 	}
 }
