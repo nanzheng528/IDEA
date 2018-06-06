@@ -1,7 +1,6 @@
 package com.freedoonline.domain.impl;
 
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,8 @@ import com.freedoonline.domain.UserDao;
 import com.freedoonline.domain.entity.User;
 
 import cn.cloudlink.core.common.dataaccess.BaseJdbcDao;
+import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.utils.CryptUtil;
 import cn.cloudlink.core.common.utils.StringUtil;
 
@@ -29,10 +30,11 @@ public class UserDaoImpl implements UserDao{
 	private BaseJdbcDao baseJdbcDao;
 	static String SELECT_USER_SQL = "";
 	static String INSERT_USER_SQL = "";
+	static String SELECTSQL;
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id from user ";
-		
+		SELECTSQL = "";
 		INSERT_USER_SQL = " INSERT INTO user (object_id, account, emp_id,department_id,position_id,address,building_id,superior_id,enp_id,user_name, password, mobile_num,main_mobile_num,language,sex,birthday,emp_date,emp_end_date,approval_limits,id_card,job,is_outsourcing, email, status, profile_photo,role_id, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	
@@ -135,5 +137,10 @@ public class UserDaoImpl implements UserDao{
 		Object[] args = {mobileNum};
 		User user = (User) baseJdbcDao.queryForObject(buffer.toString(), args, User.class);
 		return user;
+	}
+
+	@Override
+	public Page queryUserList(PageRequest pageRequest, User user) {
+		return null;
 	}
 }

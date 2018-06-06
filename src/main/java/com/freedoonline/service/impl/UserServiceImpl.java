@@ -21,6 +21,7 @@ import com.freedoonline.service.UserService;
 
 import cn.cloudlink.core.common.cache.RedisCacheService;
 import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
 import cn.cloudlink.core.common.utils.CryptUtil;
 import cn.cloudlink.core.common.utils.StringUtil;
@@ -230,7 +231,7 @@ public class UserServiceImpl implements UserService{
 		return updateResult;
 	}
 	@Override
-	public Page queryUserList(User user) throws BusinessException, Exception {
-		return null;
+	public Page queryUserList(PageRequest pageRequest,User user) throws BusinessException, Exception {
+		return null ;
 	}
 }

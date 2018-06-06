@@ -3,6 +3,8 @@ package com.freedoonline.domain.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
+
 /**
   * 
   *<p>类描述：用户实体类。</p>
@@ -11,7 +13,7 @@ import java.util.Date;
   * @since JDK1.8。
   *<p>创建日期：2018年4月27日 下午9:06:34。</p>
   */
-public class User implements Serializable{
+public class User extends PageRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String  objectId;    	// 用户ID   
 	private String  account; 		//系统账号

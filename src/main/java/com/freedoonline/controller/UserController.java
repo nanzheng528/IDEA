@@ -6,19 +6,23 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.freedoonline.common.interceptor.ThreadLocalHolder;
 import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.UserService;
 
 import cn.cloudlink.core.common.dataaccess.data.BusinessResult;
+import cn.cloudlink.core.common.dataaccess.data.ControllerResult;
+import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
 import cn.cloudlink.core.common.utils.StringUtil;
 
@@ -34,6 +38,9 @@ import cn.cloudlink.core.common.utils.StringUtil;
 @RestController
 @RequestMapping(value="/user")
 public class UserController {
+	
+	
+	private static final Logger logger =  LoggerFactory.getLogger(UserController.class);
 	
 	@Resource(name="userServiceImpl")
 	private UserService userService;
@@ -113,5 +120,26 @@ public class UserController {
 		}catch(Exception e){
 			return new BusinessResult(-1, "400", e.getMessage());
 		}
+	}
+	
+	@PostMapping("/queryUser")
+	public Object queryUserList(HttpServletRequest request,@RequestBody User user){
+			try {
+				PageRequest pageRequest = new PageRequest(user.getPageNum(), user.getPageSize(), user.getOrderBy(), user.isCountTotal());
+				Page queryuser = userService.queryUserList(pageRequest, user);
+				Integer totalPages = (int) Math.ceil(queryuser.getTotalLength()*1.0/pageRequest.getPageSize());
+				return new ControllerResult(1, "200", "ok", (int)queryuser.getTotalLength(), totalPages, queryuser.getPageSize(), 
+						queryuser.getPageNum(), queryuser.getPageNum() == 1,
+						queryuser.getPageNum() == totalPages, queryuser.getResult());
+				
+			} catch (BusinessException e) {
+				logger.error("------------查询usery业务失敗----------");
+				e.printStackTrace();
+				return GuardRresponseMessage.creatByErrorMessage(e.getCode(), e.getMessage());
+			} catch (Exception e) {
+				logger.error("------查询usery失败-------");
+				e.printStackTrace();
+				return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
+			} 
 	}
 }

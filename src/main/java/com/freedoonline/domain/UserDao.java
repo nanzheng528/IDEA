@@ -1,6 +1,11 @@
 package com.freedoonline.domain;
 
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
+
 import com.freedoonline.domain.entity.User;
+
+import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 
 /**
   * 
@@ -19,4 +24,6 @@ public interface  UserDao {
 	public String addUser(User user);
 	// 验证手机号是否注册
 	public Object validateMobileNum(String mobileNum);
+	// 验证手机号是否注册
+	public Page queryUserList(PageRequest pageRequest, User user);
 }

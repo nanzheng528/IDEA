@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.freedoonline.domain.entity.User;
 
+import antlr.collections.List;
+import cn.cloudlink.core.common.dataaccess.data.Page;
+import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
 
 /**
@@ -28,5 +31,7 @@ public interface UserService {
 	public Object addUser(User user) throws BusinessException,Exception;
 	// 更新用户信息
 	public String updateUser(Map<String,Object> paramMap) throws BusinessException,Exception;
+	// 查询用户信息列表
+	public Page queryUserList(PageRequest pageRequest,User user) throws BusinessException,Exception;
 	
 }
