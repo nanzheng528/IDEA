@@ -15,6 +15,8 @@ public class HiecsBo extends PageRequest{
 	private String co2;					//二氧化碳
 	private String pm;					//PM2.5
 	private String hcho;				//甲醛
+	private String tvoc;				//室内空气品质的研究人员通常把他们采样分析的所有室内有机气态物质称为TVOC
+	private String nh3;					//氨
 	private Double score;
 	
 	private String createUser;
@@ -24,6 +26,18 @@ public class HiecsBo extends PageRequest{
 	private String remark;
 	private Integer active;
 	
+	public String getTvoc() {
+		return tvoc;
+	}
+	public void setTvoc(String tvoc) {
+		this.tvoc = tvoc;
+	}
+	public String getNh3() {
+		return nh3;
+	}
+	public void setNh3(String nh3) {
+		this.nh3 = nh3;
+	}
 	public String getHcho() {
 		return hcho;
 	}
