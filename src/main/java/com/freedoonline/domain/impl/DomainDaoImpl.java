@@ -46,7 +46,7 @@ public class DomainDaoImpl implements DomainDao {
 		StringBuffer buffer = new StringBuffer(SELECT_DOMAIN_SQL);
 		Integer keyword = (Integer)paramMap.get("keyword");
 		buffer.append(" WHERE dt.domain_name=? ");
-		if(StringUtil.hasText(keyword.toString())){
+		if(null != keyword){
 			list.add(keyword+"%");
 			buffer.append(" AND dt.code like ? ");
 		}
