@@ -334,4 +334,19 @@ public class HiecsController {
 		}
 	}
 	
+	@PostMapping("/detailScore")
+	public Object hiecsDetailScore(HttpServletRequest request,@RequestBody HiecsBo queryBo){
+		try{
+			Map<String, Object> resultMap = new HashMap<>();
+			Map<String, Object> result = hiecsService.hiecsDetailScore(queryBo);
+			resultMap.put("val", result);
+			resultMap.put("msg", "success");
+			resultMap.put("stat", 0);
+			return resultMap;
+		}catch(BusinessException e){
+			return new BusinessResult(-1, e.getCode(), e.getMessage());
+		}catch(Exception e){
+			return new BusinessResult(-1, "400", e.getMessage());
+		}
+	}
 }

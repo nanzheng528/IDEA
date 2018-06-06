@@ -18,6 +18,7 @@ import com.freedoonline.service.bo.HiecsBo;
 import cn.cloudlink.core.common.dataaccess.BaseJdbcDao;
 import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
+import cn.cloudlink.core.common.exception.BusinessException;
 import cn.cloudlink.core.common.utils.StringUtil;
 
 /**
@@ -224,6 +225,24 @@ public class HiecsDaoImpl implements HiecsDao {
 				return baseJdbcDao.queryForList(buffer.toString(), args, Hiecs.class);
 			}
 		}
+		return null;
+	}
+	
+	/**
+	  * 
+	  * <p>功能描述:需求变更后的分数计算。</p>	
+	  * @param queryBo
+	  * @return
+	  * @throws BusinessException
+	  * @throws Exception
+	  * <p> 刘建雨</p>
+	  * @since JDK1.8。
+	  * <p>创建日期2018年6月6日 下午2:03:40。</p>
+	  * <p>更新日期:[日期YYYY-MM-DD][更改人姓名][变更描述]。</p>
+	  */
+	@Override
+	public Map<String, Object> hiecsDetailScore(HiecsBo queryBo) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
