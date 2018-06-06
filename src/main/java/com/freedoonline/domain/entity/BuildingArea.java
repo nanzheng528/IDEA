@@ -22,8 +22,8 @@ public class BuildingArea extends PageRequest implements Serializable{
 	private String areaName;
 	private Integer areaType;
 	private String floor;
-	private String number;			//预留字段
 	private String purpose;			//用途
+	private String parentId;
 
 	private String enpId;
 	private String createUser;
@@ -33,6 +33,12 @@ public class BuildingArea extends PageRequest implements Serializable{
 	private String remark;
 	private Integer active;
 	
+	public String getParentId() {
+		return parentId;
+	}
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 	public String getBuildingId() {
 		return buildingId;
 	}
@@ -44,12 +50,6 @@ public class BuildingArea extends PageRequest implements Serializable{
 	}
 	public void setPurpose(String purpose) {
 		this.purpose = purpose;
-	}
-	public String getNumber() {
-		return number;
-	}
-	public void setNumber(String number) {
-		this.number = number;
 	}
 	public String getObjectId() {
 		return objectId;

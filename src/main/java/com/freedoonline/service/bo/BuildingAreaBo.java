@@ -6,15 +6,21 @@ public class BuildingAreaBo {
 	private String buildingId;
 	private String areaNum;
 	private String areaName;
+	private String parentId;
 	
 	private Integer areaType;
 	private String areaTypeCn;
 	private String areaTypeEn;
 	private String purpose;		//用途
 	private String floor;
-	private Integer number;
 	private String remark;
 	
+	public String getParentId() {
+		return parentId;
+	}
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 	public String getBuildingId() {
 		return buildingId;
 	}
@@ -62,12 +68,6 @@ public class BuildingAreaBo {
 	}
 	public void setFloor(String floor) {
 		this.floor = floor;
-	}
-	public Integer getNumber() {
-		return number;
-	}
-	public void setNumber(Integer number) {
-		this.number = number;
 	}
 	public String getRemark() {
 		return remark;

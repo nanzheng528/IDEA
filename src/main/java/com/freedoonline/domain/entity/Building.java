@@ -8,14 +8,17 @@ public class Building implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String objectId;
-	private String buildingName;
+	private String areaNum;		//省市区(区域ID)
+	private String areaName;	//区名
+	private String buildingName;//楼宇名称
 	private Integer height;		//楼宇高度
-	private Integer floor;		//层
-	private String position;	//
-	private Integer type;
-	private Double acreage;
-	private Integer years;
-	private Date buildTime;
+	private String floor;		//层(B1+L12)
+	private String position;	//位置描述
+	private Integer type;		//楼宇类型
+	private Double acreage;		//占地面积
+	private Integer years;		//使用年限
+	private Date buildTime;		//建造时间
+	private Date openingTime;	//开业时间
 	
 	private String createUser;
 	private Date createTime;
@@ -26,7 +29,24 @@ public class Building implements Serializable{
 	private String enpId;
 	private String enpName;
 	
-	
+	public String getAreaName() {
+		return areaName;
+	}
+	public void setAreaName(String areaName) {
+		this.areaName = areaName;
+	}
+	public String getAreaNum() {
+		return areaNum;
+	}
+	public void setAreaNum(String areaNum) {
+		this.areaNum = areaNum;
+	}
+	public Date getOpeningTime() {
+		return openingTime;
+	}
+	public void setOpeningTime(Date openingTime) {
+		this.openingTime = openingTime;
+	}
 	public String getBuildingName() {
 		return buildingName;
 	}
@@ -57,10 +77,10 @@ public class Building implements Serializable{
 	public void setHeight(Integer height) {
 		this.height = height;
 	}
-	public Integer getFloor() {
+	public String getFloor() {
 		return floor;
 	}
-	public void setFloor(Integer floor) {
+	public void setFloor(String floor) {
 		this.floor = floor;
 	}
 	public String getPosition() {

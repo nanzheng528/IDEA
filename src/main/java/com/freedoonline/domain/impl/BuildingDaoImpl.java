@@ -35,9 +35,9 @@ public class BuildingDaoImpl implements BuildingDao {
 	static String SELECT_BUILDING_AREA_SQL = "";
 	
 	static {
-		SELECT_BUILDING_SQL = " SELECT b.* from building b LEFT JOIN user u on b.enp_id=u.enp_id and b.active=1 and u.active=1 ";
-		INSERT_BUILDING_AREA_SQL = " INSERT INTO building_area (object_id, area_num, area_name, area_type, number, floor, purpose, remark, enp_id, create_uesr, create_time, modify_user, modify_time, active, building_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-		SELECT_BUILDING_AREA_SQL = " select ba.object_id, ba.building_id,ba.area_name, ba.area_num, ba.area_type, ba.floor, ba.number, ba.purpose, ba.remark, dt.value as areaTypeCn, dt.value_en AS areaTypeEn from building_area ba LEFT JOIN building b ON ba.building_id=b.object_id AND ba.active=1 AND b.active=1 LEFT JOIN domain_table dt ON dt.code=ba.area_type AND dt.domain_name='building_area_type' AND dt.active=1 ";
+		SELECT_BUILDING_SQL = " SELECT CONCAT(p.province,c.city,a.area) AS areaName,b.* from building b LEFT JOIN user u on b.enp_id=u.enp_id and b.active=1 and u.active=1 LEFT JOIN areas a ON a.areaid=b.area_num LEFT JOIN cities c ON a.cityid=c.cityid LEFT JOIN provinces p ON p.provinceid=c.provinceid  ";
+		INSERT_BUILDING_AREA_SQL = " INSERT INTO building_area (object_id, area_num, area_name, area_type, floor, purpose, remark, enp_id, create_uesr, create_time, modify_user, modify_time, active, building_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+		SELECT_BUILDING_AREA_SQL = " select ba.object_id, ba.building_id,ba.area_name, ba.area_num, ba.area_type, ba.floor, ba.purpose, ba.remark, dt.value as areaTypeCn, dt.value_en AS areaTypeEn from building_area ba LEFT JOIN building b ON ba.building_id=b.object_id AND ba.active=1 AND b.active=1 LEFT JOIN domain_table dt ON dt.code=ba.area_type AND dt.domain_name='building_area_type' AND dt.active=1 ";
 	}
 	
 	@Override
@@ -86,8 +86,8 @@ public class BuildingDaoImpl implements BuildingDao {
 		//object_id, area_num, area_name, area_type, number, floor, purpose, 
 		//remark, enp_id, create_uesr, create_time, modify_user, modify_time, active
 		Object[] args =  {
-			objectId, buildingArea.getAreaNum(),buildingArea.getAreaName(),buildingArea.getAreaType(),
-			buildingArea.getNumber()!=null?buildingArea.getNumber():1,buildingArea.getFloor(),buildingArea.getPurpose(),
+			objectId, buildingArea.getFloor()+"_"+buildingArea.getAreaName(),buildingArea.getAreaName(),buildingArea.getAreaType(),
+			buildingArea.getFloor(),buildingArea.getPurpose(),
 			buildingArea.getRemark(),buildingArea.getEnpId(),buildingArea.getCreateUser(),
 			buildingArea.getCreateTime()!=null?buildingArea.getCreateTime():new Date(),buildingArea.getModifyUser(),
 			buildingArea.getModifyTime()!=null?buildingArea.getModifyTime():new Date(),
