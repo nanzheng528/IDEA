@@ -37,5 +37,7 @@ public interface HiecsService {
 	public Object pushMsg(Map<String, Object> param) throws BusinessException,Exception;
 	// 获取单个类型不达标的数据
 	public Object queryType(Map<String, Object> param) throws BusinessException,Exception;
+	// 更新需求后的明细分数计算
+	public Map<String,Object>  hiecsDetailScore(HiecsBo queryBo)throws BusinessException,Exception;
 	
 }

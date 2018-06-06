@@ -33,4 +33,6 @@ public interface HiecsDao {
 	public Object pushMsg(Map<String, Object> param);
 	
 	public Object queryType(Map<String, Object> param);
+	// 更新需求后的明细分数计算
+	public Map<String,Object>  hiecsDetailScore(HiecsBo queryBo);
 }

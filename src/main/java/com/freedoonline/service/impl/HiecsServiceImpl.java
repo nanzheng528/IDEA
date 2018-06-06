@@ -392,7 +392,6 @@ public class HiecsServiceImpl implements HiecsService {
 				}
 				resultMap.put("co2", new HiecsStandard(((100 * co2) / sum),CO2+"",CO2+""));
 				resultMap.put("pm", new HiecsStandard(((100 * pm) / sum),PM+"",PM+""));
-				//resultMap.put("th", new HiecsStandard(((100 * th) / sum),(temperatureSummer+1)+","+(humiditySummer+10)+"",""+(temperatureSummer-1)+","+(humiditySummer-10)+""));
 				Map<String, Object> thResult = new HashMap<>();
 				thResult.put("score", ((100 * temperature) / sum));
 				thResult.put("maxStandardTem", (temperatureSummer+1)+"");
@@ -406,33 +405,6 @@ public class HiecsServiceImpl implements HiecsService {
 				resultMap.put("totalScore", ((((100 * co2) / sum))+(((100 * pm) / sum))+((100 * th) / sum)+((100 * hcho) / sum))/4);
 			}
 		}
-		// if(StringUtil.hasText(queryBo.getFloor())){
-		// int sum = list.size();
-		// if(list!=null && list.size()>0){
-		// for(Hiecs hiecs:list){
-		// if(Double.parseDouble(hiecs.getCo2())<CO2){
-		// co2++;
-		// }
-		// if(Double.parseDouble(hiecs.getPm())<PM){
-		// pm++;
-		// }
-		// if((Double.parseDouble(hiecs.getTemperature()) >=
-		// (temperatureSummer-1) && Double.parseDouble(hiecs.getTemperature())
-		// <= (temperatureSummer+1))){
-		// temperature++;
-		// }
-		// if( (Double.parseDouble(hiecs.getHumidity()) >= (humiditySummer-10)
-		// && Double.parseDouble(hiecs.getHumidity()) <= (humiditySummer+10))){
-		// humidity++;
-		// }
-		//
-		// }
-		// resultMap.put("Co2", (100*co2)/sum);
-		// resultMap.put("pm", (100*pm)/sum);
-		// resultMap.put("temperature", (100*temperature)/sum);
-		// resultMap.put("humidity", (100*humidity)/sum);
-		// }
-		// }
 		return resultMap;
 	}
 	
@@ -452,5 +424,25 @@ public class HiecsServiceImpl implements HiecsService {
 			throw new BusinessException("楼宇ID不能为空！", "403");
 		}
 		return hiecsDao.queryType(param);
+	}
+	
+	/**
+	  * 
+	  * <p>功能描述:需求变更后的分数计算。</p>	
+	  * @param queryBo
+	  * @return
+	  * @throws BusinessException
+	  * @throws Exception
+	  * <p> 刘建雨</p>
+	  * @since JDK1.8。
+	  * <p>创建日期2018年6月6日 下午2:03:40。</p>
+	  * <p>更新日期:[日期YYYY-MM-DD][更改人姓名][变更描述]。</p>
+	  */
+	@Override
+	public Map<String, Object> hiecsDetailScore(HiecsBo queryBo) throws BusinessException, Exception {
+		if (!StringUtil.hasText(queryBo.getBuildingId())) {
+			throw new BusinessException("楼宇ID不能为空！", "403");
+		}
+		return null;
 	}
 }
