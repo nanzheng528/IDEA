@@ -32,6 +32,8 @@ public class Equipment implements Serializable{
 	private String buildingName;	//楼宇名称
 	private String buildingFloor;	//楼层
 	private String buildingArea;	//楼层区域(安装区域)
+	private String buildingAreaId;	//楼层区域(安装区域)
+	
 	private String serviceArea;		//服务区域
 	private String manufacturer;	//生产厂商
 	private Date manufactureTime;	//生产日期
@@ -49,6 +51,12 @@ public class Equipment implements Serializable{
 	private Integer active;
 	private String enpId;
 	
+	public String getBuildingAreaId() {
+		return buildingAreaId;
+	}
+	public void setBuildingAreaId(String buildingAreaId) {
+		this.buildingAreaId = buildingAreaId;
+	}
 	public String getPurpose() {
 		return purpose;
 	}
