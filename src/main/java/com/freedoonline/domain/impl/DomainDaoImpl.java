@@ -47,7 +47,7 @@ public class DomainDaoImpl implements DomainDao {
 		Integer keyword = (Integer)paramMap.get("keyword");
 		buffer.append(" WHERE dt.domain_name=? ");
 		if(null != keyword){
-			list.add(keyword+"%");
+			list.add(keyword+"%"); 
 			buffer.append(" AND dt.code like ? ");
 		}
 		@SuppressWarnings("unchecked")
