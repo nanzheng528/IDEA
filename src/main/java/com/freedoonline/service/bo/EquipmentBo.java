@@ -25,10 +25,15 @@ public class EquipmentBo extends PageRequest implements Serializable{
 	private Integer quantity;		//数量
 	private String purpose;			//用途
 	
+	// 即将替换
+	//----------------------------------------------------//
 	private String buildingId;		//楼宇ID
 	private String buildingName;	//楼宇名称
 	private String buildingFloor;	//楼层
 	private String buildingArea;	//楼层区域(安装区域)
+	//----------------------------------------------------//
+	private String buildingAreaId;	//区域ID
+	
 	private String serviceArea;		//服务区域
 	private String manufacturer;	//生产厂商
 	private Date manufactureTime;	//生产日期
@@ -49,6 +54,14 @@ public class EquipmentBo extends PageRequest implements Serializable{
 	private String keyword;
 	
 	
+	public String getBuildingAreaId() {
+		return buildingAreaId;
+	}
+
+	public void setBuildingAreaId(String buildingAreaId) {
+		this.buildingAreaId = buildingAreaId;
+	}
+
 	public String getSystemNum() {
 		return systemNum;
 	}
