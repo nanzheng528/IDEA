@@ -1,6 +1,5 @@
 package com.freedoonline.domain.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,10 +13,8 @@ import org.springframework.stereotype.Repository;
 import com.freedoonline.domain.BuildingDao;
 import com.freedoonline.domain.entity.Building;
 import com.freedoonline.domain.entity.BuildingArea;
-import com.freedoonline.domain.entity.Equipment;
 import com.freedoonline.service.bo.BuildingAreaBo;
 import com.freedoonline.service.bo.BuildingFloorBo;
-import com.freedoonline.service.bo.EquipmentBo;
 
 import cn.cloudlink.core.common.dataaccess.BaseJdbcDao;
 import cn.cloudlink.core.common.dataaccess.data.Page;
@@ -36,8 +33,8 @@ public class BuildingDaoImpl implements BuildingDao {
 	
 	static {
 		SELECT_BUILDING_SQL = " SELECT CONCAT(p.province,c.city,a.area) AS areaName,b.* from building b LEFT JOIN user u on b.enp_id=u.enp_id and b.active=1 and u.active=1 LEFT JOIN areas a ON a.areaid=b.area_num LEFT JOIN cities c ON a.cityid=c.cityid LEFT JOIN provinces p ON p.provinceid=c.provinceid  ";
-		INSERT_BUILDING_AREA_SQL = " INSERT INTO building_area (object_id, area_num, area_name, area_type, floor, purpose, remark, enp_id, create_uesr, create_time, modify_user, modify_time, active, building_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-		SELECT_BUILDING_AREA_SQL = " select ba.object_id, ba.building_id,ba.area_name, ba.area_num, ba.area_type, ba.floor, ba.purpose, ba.remark, dt.value as areaTypeCn, dt.value_en AS areaTypeEn from building_area ba LEFT JOIN building b ON ba.building_id=b.object_id AND ba.active=1 AND b.active=1 LEFT JOIN domain_table dt ON dt.code=ba.area_type AND dt.domain_name='building_area_type' AND dt.active=1 ";
+		INSERT_BUILDING_AREA_SQL = " INSERT INTO building_area (object_id, area_num, area_name, area_type, floor, purpose, remark, enp_id, create_uesr, create_time, modify_user, modify_time, active, building_id,parent_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+		SELECT_BUILDING_AREA_SQL = " select ba.object_id, ba.building_id,ba.area_name, ba.area_num, ba.area_type, ba.floor, ba.purpose, ba.remark, dt.value as areaTypeCn, dt.value_en AS areaTypeEn , ba.parent_id from building_area ba LEFT JOIN building b ON ba.building_id=b.object_id AND ba.active=1 AND b.active=1 LEFT JOIN domain_table dt ON dt.code=ba.area_type AND dt.domain_name='building_area_type' AND dt.active=1 ";
 	}
 	
 	@Override
@@ -91,7 +88,7 @@ public class BuildingDaoImpl implements BuildingDao {
 			buildingArea.getRemark(),buildingArea.getEnpId(),buildingArea.getCreateUser(),
 			buildingArea.getCreateTime()!=null?buildingArea.getCreateTime():new Date(),buildingArea.getModifyUser(),
 			buildingArea.getModifyTime()!=null?buildingArea.getModifyTime():new Date(),
-			buildingArea.getActive()!=null?buildingArea.getActive():1,buildingArea.getBuildingId()
+			buildingArea.getActive()!=null?buildingArea.getActive():1,buildingArea.getBuildingId(),buildingArea.getParentId()
 		};
 		baseJdbcDao.save(INSERT_BUILDING_AREA_SQL, args);
 		return objectId;
