@@ -94,6 +94,42 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.33</version>
         </dependency>
+        <dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>alidayu.smsapi</artifactId>
+			<version>20161101</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-sms</artifactId>
+			<version>3.0.0-rc1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.29</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			  <groupId>cn.jasgroup</groupId>
+			  <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+			  <version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

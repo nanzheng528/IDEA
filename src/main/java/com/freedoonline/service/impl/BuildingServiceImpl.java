@@ -80,14 +80,14 @@ public class BuildingServiceImpl implements BuildingService {
 		if (!StringUtil.hasText(buildingArea.getBuildingId())) {
 			throw new BusinessException("所属楼宇不能为空！", "403");
 		}
-		if (!StringUtil.hasText(buildingArea.getAreaNum())) {
-			throw new BusinessException("区域编号不能为空！", "403");
-		}
 		if (!StringUtil.hasText(buildingArea.getFloor())) {
 			throw new BusinessException("区域位置不能为空！", "403");
 		}
 		if (!StringUtil.hasText(buildingArea.getAreaType().toString())) {
 			throw new BusinessException("区域类型不能为空！", "403");
+		}
+		if (!StringUtil.hasText(buildingArea.getParentId())) {
+			throw new BusinessException("父节点ID不能为空！", "403");
 		}
 		return buildingDao.addBuildingArea(buildingArea);
 	}
