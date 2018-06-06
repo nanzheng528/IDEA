@@ -31,9 +31,9 @@ public class MeterServiceImpl implements MeterService {
 	@Override
 	public String addMeter(Meter meter) {
 		logger.info("--------------开始添加meter数据----------------");
-		if (!StringUtil.hasText(meter.getBuildingId())) {
-			throw new BusinessException("所属楼宇不能为空！", "403");
-		}
+//		if (!StringUtil.hasText(meter.getBuildingId())) {
+//			throw new BusinessException("所属楼宇不能为空！", "403");
+//		}
 		if (!StringUtil.hasText(meter.getBuildingAreaId())) {
 			throw new BusinessException("位置不能为空！", "403");
 		}
@@ -88,9 +88,9 @@ public class MeterServiceImpl implements MeterService {
 		if (!StringUtil.hasText(meter.getObjectId())){
 			throw new BusinessException("objectId不能为空", "403");
 		}
-		if (!StringUtil.hasText(meter.getBuildingId())) {
-			throw new BusinessException("所属楼宇不能为空！", "403");
-		}
+//		if (!StringUtil.hasText(meter.getBuildingId())) {
+//			throw new BusinessException("所属楼宇不能为空！", "403");
+//		}
 		if (!StringUtil.hasText(meter.getBuildingAreaId())) {
 			throw new BusinessException("位置不能为空！", "403");
 		}

@@ -44,7 +44,7 @@ public class MeterDaoImpl implements MeterDao {
 				+ "service_area,ul_alarm, ll_alarm,status, create_user, create_time, modify_user, modify_time, active, remark)VALUE(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		DELTMETERSQL = "update meter SET active = ?,modify_user = ?,modify_time = ? where object_id = ?";
 		UPDATESQL = "update meter SET name  = ?,number = ?,type = ?,energy_type = ?,unit = ?,building_area_id = ?,ul_alarm =?,ll_alarm = ?,status = ?,"
-				+ "modify_user = ?,modify_time = ?" + " where object_id = ? and building_id = ?";
+				+ "modify_user = ?,modify_time = ?" + " where object_id = ?";
 		SELECTSQL = "select m.number, m.name, m.type as type, m.building_area_id, m.status , m.object_id , t.value as type_value , t.value_en as type_value_en,a.area_name, b.enp_id from meter m left join  building b on m.building_id = b.object_id left join (select code ,value , value_en from domain_table where domain_name = 'meter_type') t on t.code = m.type  left join (select code,value ,value_en from domain_table where domain_name = 'ec_type_1' or domain_name = 'ec_type_2') e on e.code = m.energy_type left join building_area a on a.object_id = m.building_area_id where b.enp_id = ? and m.active = '1'";
 		SELECTBUIDINGAREASQL = "select object_id , area_name from  building_area where 1 = 1 "; 
 	}
@@ -76,10 +76,9 @@ public class MeterDaoImpl implements MeterDao {
 		Object[] args = { meter.getName(), meter.getNumber(), meter.getType(), meter.getEnergyType(), meter.getUnit(),
 				meter.getBuildingAreaId(), meter.getUlAlarm(), meter.getLlAlarm(),
 				meter.getStatus() != null ? meter.getStatus() : RUNSTATUS, meter.getModifyUser(),
-				meter.getModifyTime() != null ? meter.getModifyTime() : new Date(), meter.getObjectId(),
-				meter.getBuildingId() };
+				meter.getModifyTime() != null ? meter.getModifyTime() : new Date(), meter.getObjectId()
+					};
 		return baseJdbcDao.update(UPDATESQL, args);
-
 	}
 
 	@SuppressWarnings("unchecked")
