@@ -20,6 +20,7 @@ import com.freedoonline.service.ICommonService;
 import com.freedoonline.service.UserService;
 
 import cn.cloudlink.core.common.cache.RedisCacheService;
+import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.exception.BusinessException;
 import cn.cloudlink.core.common.utils.CryptUtil;
 import cn.cloudlink.core.common.utils.StringUtil;
@@ -154,7 +155,7 @@ public class UserServiceImpl implements UserService{
 		if(!StringUtil.hasText(user.getIdCard())){
     		throw new BusinessException("身份证不能为空！","403");
 		}
-		if(null == user.getRoleId().toString()){
+		if(null == user.getRoleId()){
     		throw new BusinessException("权限不能为空！","403");
 		}
 		if(!StringUtil.hasText(user.getEmail())){
@@ -227,5 +228,9 @@ public class UserServiceImpl implements UserService{
 		boolean updateResult = commonService.updateColumns("user", columnNames, columnValues, 
 				whereNames, whereValues, whereFilter);
 		return updateResult;
+	}
+	@Override
+	public Page queryUserList(User user) throws BusinessException, Exception {
+		return null;
 	}
 }
