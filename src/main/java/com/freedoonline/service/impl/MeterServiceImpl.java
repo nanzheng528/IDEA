@@ -1,5 +1,6 @@
 package com.freedoonline.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -132,9 +133,19 @@ public class MeterServiceImpl implements MeterService {
 		return MeterDao.queryMeterData(pageRequest, meter);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List queryPosition(Map<String,Object> searchMap) {
-		return  MeterDao.queryPosition(searchMap);
+		List<Map<String, Object>> positionList = MeterDao.queryPosition(searchMap);
+		Map<String, Object> leafMap = new HashMap<>();
+		leafMap.put("leaf", false);
+		if(null == positionList || positionList.size() == 0 ){
+			leafMap.replace("leaf", true);
+			positionList.add(leafMap);
+		} else {
+			positionList.add(leafMap);
+		}
+		return positionList;
 	}
 
 

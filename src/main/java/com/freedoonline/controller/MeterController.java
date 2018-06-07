@@ -139,9 +139,10 @@ public class MeterController extends BaseController{
 		} 
 	}
 	
+	
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/queryPosition")
-	public GuardRresponseMessage queryMeter(HttpServletRequest request,@RequestBody Map<String, Object> queryMap){
+	public GuardRresponseMessage queryPosition (HttpServletRequest request,@RequestBody Map<String, Object> queryMap){
 		try {
 			return GuardRresponseMessage.creatBySuccessData(meterService.queryPosition(queryMap));
 		} catch (BusinessException e) {
