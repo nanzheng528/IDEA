@@ -67,7 +67,7 @@ public class LoginController extends BaseController{
 			//验证用户账号是否合法
 			User user = (User)userService.validateUser(loginNum, password);
 			if(null == user){
-				return new BusinessResult(-1, "403", "用户不存在！");
+				return new BusinessResult(-1, "403", "用户名密码不正确！");
 			}
 			String token = userService.createUserToken(request, user);
 			resultMap.put("val", token);
