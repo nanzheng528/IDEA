@@ -28,6 +28,7 @@ public class User extends PageRequest implements Serializable {
 	private String  superiorId;			//直接主管
 	private String  superiorName;			//直接主管名称
 
+	private String  orginalPwd;   //加密前密码
 	private String  userName ;      // 姓名
 	private String  password;      	// 密码 
 	private String  mobileNum;      // 工作绑定电话 
@@ -87,6 +88,16 @@ public class User extends PageRequest implements Serializable {
 
 	public String getObjectId() {
 		return objectId;
+	}
+
+	
+
+	public String getOrginalPwd() {
+		return orginalPwd;
+	}
+
+	public void setOrginalPwd(String orginalPwd) {
+		this.orginalPwd = orginalPwd;
 	}
 
 	public void setObjectId(String objectId) {

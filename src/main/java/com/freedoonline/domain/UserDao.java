@@ -1,7 +1,5 @@
 package com.freedoonline.domain;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
-
 import com.freedoonline.domain.entity.User;
 
 import cn.cloudlink.core.common.dataaccess.data.Page;
@@ -21,7 +19,7 @@ public interface  UserDao {
 	// 用户详情
 	public Object validateUser(String objectId);
 	// 用户注册
-	public String addUser(User user);
+	public User addUser(User user);
 	// 验证手机号是否注册
 	public Object validateMobileNum(String mobileNum);
 	// 验证手机号是否注册

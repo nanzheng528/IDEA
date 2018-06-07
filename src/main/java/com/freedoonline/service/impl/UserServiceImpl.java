@@ -2,6 +2,7 @@ package com.freedoonline.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,11 @@ import com.freedoonline.common.util.TransformUtil;
 import com.freedoonline.domain.UserDao;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.ICommonService;
+import com.freedoonline.service.IMsmService;
 import com.freedoonline.service.UserService;
 
 import cn.cloudlink.core.common.cache.RedisCacheService;
+import cn.cloudlink.core.common.dataaccess.data.BusinessResult;
 import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.exception.BusinessException;
@@ -37,6 +42,8 @@ import cn.cloudlink.core.common.utils.StringUtil;
 @Service("userServiceImpl")
 public class UserServiceImpl implements UserService{
 	
+	private static final Logger logger =  LoggerFactory.getLogger(UserService.class);
+	
 	@Resource(name="userDaoImpl")
 	private UserDao userDao;
 	
@@ -46,8 +53,21 @@ public class UserServiceImpl implements UserService{
 	@Resource(name="commonServiceImpl")
 	private ICommonService commonService;
 	
+	@Resource(name="msmServiceImpl")
+	private IMsmService msmService;
+	 
 	@Value("${fileConfig.diskFile.fileServer}")
 	private String fileServer;
+	
+	@Value("${messageSendParam.sendMode}")
+	private String sendMode;
+	
+	@Value("${messageSendParam.useCategory}")
+	private String useCategory;
+	
+	@Value("${messageSendParam.signName}")
+	private String signName;
+	
 	
 	/**
 	  * 
@@ -162,7 +182,34 @@ public class UserServiceImpl implements UserService{
 		if(!StringUtil.hasText(user.getEmail())){
     		throw new BusinessException("邮箱不能为空！","403");
 		}
-		return userDao.addUser(user);
+		User addSuccessUser =  userDao.addUser(user);
+		if(StringUtil.hasText(addSuccessUser.getObjectId()) && null != user){
+			logger.info("-------------插入用户成功--------------");
+			try {
+				logger.info("-------------开始发送短信---------------");
+				Map<String, Object> sendMessageParamMap = new HashMap<>();
+				sendMessageParamMap.put("useCategory", useCategory);
+				sendMessageParamMap.put("mobileNum", user.getMobileNum());
+				sendMessageParamMap.put("pwd", addSuccessUser.getOrginalPwd());
+				sendMessageParamMap.put("signName", signName);
+				sendMessageParamMap.put("effectiveTime", "5");
+				sendMessageParamMap.put("time", "5分钟");
+				sendMessageParamMap.put("user",  user.getMobileNum());
+				BusinessResult sendMsmResult = (BusinessResult) msmService.sendMsm(sendMessageParamMap);
+				if(sendMsmResult.getSuccess() != null && sendMsmResult.getSuccess() == 1){
+					logger.info("-------------发送短信成功-------------");
+					
+				} else {
+					logger.error("--------------发送短信失败-------------");
+					throw new BusinessException("发送短信失败！","501");
+				}
+				return addSuccessUser;
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new BusinessException("发送短信失败！","501");
+			}
+		} 
+		return addSuccessUser;
 	}
 	
 	/**

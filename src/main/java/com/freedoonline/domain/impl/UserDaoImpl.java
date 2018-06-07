@@ -91,7 +91,7 @@ public class UserDaoImpl implements UserDao{
 	  * <p>更新日期:[日期YYYY-MM-DD][更改人姓名][变更描述]。</p>
 	  */
 	@Override
-	public String addUser(User user) {
+	public User addUser(User user) {
 		String objectId = StringUtil.hasText(user.getObjectId())?user.getObjectId():UUID.randomUUID().toString();
 		user.setActive(1);
 		user.setStatus(1);
@@ -101,6 +101,7 @@ public class UserDaoImpl implements UserDao{
 			if(!StringUtil.hasText(user.getPassword())){
 				String[] randomPassword = UUID.randomUUID().toString().split("-");
 				user.setPassword(CryptUtil.md5Encrypt(randomPassword[0]));
+				user.setOrginalPwd(randomPassword[0]);
 			} else{
 				//密码不为空，设置为md5加密的密码
 				user.setPassword(CryptUtil.md5Encrypt(user.getPassword()));
@@ -119,8 +120,13 @@ public class UserDaoImpl implements UserDao{
 				,user.getJob(),user.getIsOutsourcing() == null ? 0 : user.getIsOutsourcing(),user.getEmail(),user.getStatus()
 				,user.getProfilePhoto(),user.getRoleId(),user.getCreateUser(),user.getCreateTime(),user.getModifyUser()
 				,user.getModifyTime(),user.getActive(),user.getRemark()};
-		baseJdbcDao.save(INSERT_USER_SQL, args);
-		return objectId;
+		if(baseJdbcDao.save(INSERT_USER_SQL, args) == 1){
+			user.setObjectId(objectId);
+			
+		} else {
+			user.setObjectId("");
+		};
+		return user;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package com.freedoonline.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.freedoonline.common.interceptor.ThreadLocalHolder;
+import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.UserService;
 
@@ -104,11 +106,11 @@ public class LoginController extends BaseController{
 				user.setCreateUser(userBo.getObjectId());//设置创建人
 				user.setModifyUser(userBo.getObjectId());//设置修改人
 			}
-			//添加应用
-			String objectId = (String)userService.addUser(user);
-			Map<String,Object> dataMap = new HashMap<String,Object>();
-			dataMap.put("objectId", objectId);
-			return new BusinessResult(Arrays.asList(dataMap));
+			//添加用户
+			User addSuccessUser =  (User) userService.addUser(user);
+			ArrayList<Object> arrayList = new ArrayList<>();
+			arrayList.add(addSuccessUser.getObjectId());
+			return new BusinessResult(arrayList);
 		}catch(BusinessException e){
 			return new BusinessResult(-1, e.getCode(), e.getMessage());
 		}catch(Exception e){
