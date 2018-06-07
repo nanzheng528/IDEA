@@ -2,6 +2,7 @@ package com.freedoonline.domain.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,7 @@ public class UserDaoImpl implements UserDao{
 	  * @since JDK1.8。
 	  * <p>创建日期2018年4月28日 上午11:11:13。</p>
 	  * <p>更新日期:[日期YYYY-MM-DD][更改人姓名][变更描述]。</p>
-	  */
+//	  */
 	@Override
 	public Object validateUser(String objectId) {
 		StringBuffer buffer = new StringBuffer(SELECT_USER_SQL);
@@ -99,9 +100,10 @@ public class UserDaoImpl implements UserDao{
 		try {
 			//如果密码为空，则用随机生成的uuid的前8位作为密码
 			if(!StringUtil.hasText(user.getPassword())){
-				String[] randomPassword = UUID.randomUUID().toString().split("-");
-				user.setPassword(CryptUtil.md5Encrypt(randomPassword[0]));
-				user.setOrginalPwd(randomPassword[0]);
+				//String[] randomPassword = UUID.randomUUID().toString().split("-");
+				String randomPassword = RandowNumberByLength(6);
+				user.setPassword(CryptUtil.md5Encrypt(randomPassword));
+				user.setOrginalPwd(randomPassword);
 			} else{
 				//密码不为空，设置为md5加密的密码
 				user.setPassword(CryptUtil.md5Encrypt(user.getPassword()));
@@ -118,8 +120,8 @@ public class UserDaoImpl implements UserDao{
 				,user.getPassword(),user.getMobileNum(),user.getMainMobileNum(),user.getLanguage(),user.getSex()
 				,user.getBirthday(),user.getEmpDate(),user.getEmpEndDate(),user.getApprovalLimits(),user.getIdCard()
 				,user.getJob(),user.getIsOutsourcing() == null ? 0 : user.getIsOutsourcing(),user.getEmail(),user.getStatus()
-				,user.getProfilePhoto(),user.getRoleId(),user.getCreateUser(),user.getCreateTime(),user.getModifyUser()
-				,user.getModifyTime(),user.getActive(),user.getRemark()};
+				,user.getProfilePhoto(),user.getRoleId(),user.getCreateUser(),user.getCreateTime() != null ? user.getCreateTime() : new Date(),user.getModifyUser()
+				,user.getModifyTime() != null ? user.getModifyTime() : new Date(),user.getActive(),user.getRemark()};
 		if(baseJdbcDao.save(INSERT_USER_SQL, args) == 1){
 			user.setObjectId(objectId);
 			
@@ -205,5 +207,20 @@ public class UserDaoImpl implements UserDao{
 		}
 		return baseJdbcDao.queryPageMap(pageRequest, buffer.toString(), args.toArray());
 	}
+	
+	/**
+	 * 
+	 * @param length //生成几位的随机数
+	 */
+	private String RandowNumberByLength(int length){
+		Random random = new Random();
+		String result = "";
+		for (int i = 0 ; i < 6;i++){
+			//生成一个0-10的随机数
+			result += random.nextInt(10);
+		}
+		return result;
+	}
+	
 	
 }
