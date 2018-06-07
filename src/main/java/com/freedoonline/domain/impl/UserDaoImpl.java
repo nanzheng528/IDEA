@@ -98,8 +98,9 @@ public class UserDaoImpl implements UserDao{
 		user.setStatus(1);
 		user.setRoleId(2);
 		try {
-			//如果密码为空，则用随机生成的uuid的前8位作为密码
+			//如果密码为空，则随机生成6位数字
 			if(!StringUtil.hasText(user.getPassword())){
+				//如果密码为空，则用随机生成的uuid的前8位作为密码
 				//String[] randomPassword = UUID.randomUUID().toString().split("-");
 				String randomPassword = RandowNumberByLength(6);
 				user.setPassword(CryptUtil.md5Encrypt(randomPassword));
@@ -215,12 +216,10 @@ public class UserDaoImpl implements UserDao{
 	private String RandowNumberByLength(int length){
 		Random random = new Random();
 		String result = "";
-		for (int i = 0 ; i < 6;i++){
+		for (int i = 0 ; i < length ;i++){
 			//生成一个0-10的随机数
 			result += random.nextInt(10);
 		}
 		return result;
 	}
-	
-	
 }
