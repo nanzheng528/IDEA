@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-import org.mockito.exceptions.verification.NeverWantedButInvoked;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,9 +29,11 @@ public class UserDaoImpl implements UserDao{
 	
 	@Autowired
 	private BaseJdbcDao baseJdbcDao;
+	
 	static String SELECT_USER_SQL = "";
 	static String INSERT_USER_SQL = "";
 	static String SELECTSQL = "";
+	static String SELECT_USER_BYROLE_SQL="";
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id from user ";
@@ -192,6 +193,11 @@ public class UserDaoImpl implements UserDao{
 			buffer.append(" and u.enp_id like ?");
 			args.add("%"+user.getEnpId()+"%");
 		}
+		if(null == user.getRoleId()){
+			buffer.append(" and u.role_id = ?");
+			args.add(user.getRoleId());
+		}
 		return baseJdbcDao.queryPageMap(pageRequest, buffer.toString(), args.toArray());
 	}
+	
 }
