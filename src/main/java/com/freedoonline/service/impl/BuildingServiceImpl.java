@@ -77,18 +77,24 @@ public class BuildingServiceImpl implements BuildingService {
 		if (!StringUtil.hasText(buildingArea.getAreaName())) {
 			throw new BusinessException("区域名称不能为空！", "403");
 		}
-		if (!StringUtil.hasText(buildingArea.getBuildingId())) {
-			throw new BusinessException("所属楼宇不能为空！", "403");
-		}
-		if (!StringUtil.hasText(buildingArea.getFloor())) {
-			throw new BusinessException("区域位置不能为空！", "403");
-		}
 		if (!StringUtil.hasText(buildingArea.getAreaType().toString())) {
 			throw new BusinessException("区域类型不能为空！", "403");
+		}else{
+			if(buildingArea.getAreaType() == 2){
+				buildingArea.setFloor(buildingArea.getAreaName());
+			}
 		}
 		if (!StringUtil.hasText(buildingArea.getParentId())) {
 			throw new BusinessException("父节点ID不能为空！", "403");
 		}
+		BuildingArea ParentBuildingArea = buildingDao.queryBaById(buildingArea.getParentId(),buildingArea.getEnpId());
+		if(null==ParentBuildingArea){
+			throw new BusinessException("区域ID不存在！", "403");
+		}
+		//设置属性
+		buildingArea.setBuildingId(ParentBuildingArea.getBuildingId());
+		buildingArea.setFloor(ParentBuildingArea.getFloor()!=null && !ParentBuildingArea.getFloor().equals("")?ParentBuildingArea.getFloor():buildingArea.getFloor());
+		
 		return buildingDao.addBuildingArea(buildingArea);
 	}
 	

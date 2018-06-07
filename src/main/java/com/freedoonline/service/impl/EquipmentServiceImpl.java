@@ -11,7 +11,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.freedoonline.common.util.TransformUtil;
+import com.freedoonline.domain.BuildingDao;
 import com.freedoonline.domain.EquipmentDao;
+import com.freedoonline.domain.entity.BuildingArea;
 import com.freedoonline.domain.entity.Equipment;
 import com.freedoonline.domain.entity.MaintenancePlan;
 import com.freedoonline.domain.entity.SubSystemFault;
@@ -38,6 +40,9 @@ public class EquipmentServiceImpl implements EquipmentService {
 	@Resource(name = "commonServiceImpl")
 	private ICommonService commonService;
 	
+	@Resource(name = "buildingDaoImpl")
+	private BuildingDao buildingDao;
+	
 	@Override
 	public Page<Equipment> queryListEquipment(PageRequest pageRequest,EquipmentBo queryBo) throws BusinessException, Exception {
 		return equipmentDao.queryListEquipment(pageRequest,queryBo);
@@ -45,26 +50,37 @@ public class EquipmentServiceImpl implements EquipmentService {
 	
 	@Override
 	public Object addEquipment(EquipmentBo queryBo) throws BusinessException, Exception {
-		if (!StringUtil.hasText(queryBo.getBuildingId())) {
-			throw new BusinessException("所属楼宇不能为空！", "403");
-		}
-		if (!StringUtil.hasText(queryBo.getBuildingFloor())) {
-			throw new BusinessException("所属楼层不能为空！", "403");
-		}
+//		if (!StringUtil.hasText(queryBo.getBuildingId())) {
+//			throw new BusinessException("所属楼宇不能为空！", "403");
+//		}
+//		if (!StringUtil.hasText(queryBo.getBuildingFloor())) {
+//			throw new BusinessException("所属楼层不能为空！", "403");
+//		}
 		if (!StringUtil.hasText(queryBo.getEquNum())) {
 			throw new BusinessException("设备编号不能为空！", "403");
 		}
 		if (!StringUtil.hasText(queryBo.getEquName())) {
 			throw new BusinessException("设备名称不能为空！", "403");
 		}
-		if (!StringUtil.hasText(queryBo.getEquModel())) {
-			throw new BusinessException("设备型号不能为空！", "403");
+//		if (!StringUtil.hasText(queryBo.getEquModel())) {
+//			throw new BusinessException("设备型号不能为空！", "403");
+//		}
+//		if (!StringUtil.hasText(queryBo.getManufacturer())) {
+//			throw new BusinessException("生产厂商不能为空！", "403");
+//		}
+//		if(null == queryBo.getQuantity()){
+//			throw new BusinessException("设备数量不能为空！", "403");
+//		}
+		if (!StringUtil.hasText(queryBo.getBuildingAreaId())) {
+			throw new BusinessException("区域ID不能为空！", "403");
 		}
-		if (!StringUtil.hasText(queryBo.getManufacturer())) {
-			throw new BusinessException("生产厂商不能为空！", "403");
-		}
-		if(null == queryBo.getQuantity()){
-			throw new BusinessException("设备数量不能为空！", "403");
+		BuildingArea buildingArea = buildingDao.queryBaById(queryBo.getBuildingAreaId(),queryBo.getEnpId());
+		if(null!=buildingArea){
+			queryBo.setBuildingFloor(buildingArea.getFloor());
+			queryBo.setBuildingArea(buildingArea.getAreaName());
+			queryBo.setBuildingId(buildingArea.getBuildingId());
+		}else{
+			throw new BusinessException("区域ID不存在！", "403");
 		}
 		return equipmentDao.addEquipment(queryBo);
 	}
@@ -399,12 +415,22 @@ public class EquipmentServiceImpl implements EquipmentService {
 	public String updateEquById(Map<String, Object> paramMap) throws BusinessException, Exception {
 		String objectId = (String) paramMap.get("objectId");
 		String enpId = (String) paramMap.get("enpId");
+		String buildingAreaId = (String) paramMap.get("buildingAreaId");
+		
+		BuildingArea buildingArea = buildingDao.queryBaById(buildingAreaId,enpId);
+		if(null!=buildingArea){
+			paramMap.put("buildingId", buildingArea.getBuildingId());
+			paramMap.put("buildingFloor", buildingArea.getFloor());
+			paramMap.put("buildingArea", buildingArea.getAreaName());
+		}else{
+			throw new BusinessException("区域ID不存在！", "403");
+		}
 		
 		paramMap.remove("objectId");
 		paramMap.remove("createUser");
 		paramMap.remove("createTime");
 		paramMap.remove("modifyTime");
-		paramMap.remove("active");
+		//paramMap.remove("active");
 		paramMap.remove("enpId");
 		
 		Long manufactureTime1 = (Long)paramMap.get("manufactureTime");

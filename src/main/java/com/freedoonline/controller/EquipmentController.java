@@ -264,9 +264,9 @@ public class EquipmentController {
 	public Object querySub(HttpServletRequest request,@RequestBody Map<String, Object> param){
 		try{
 			Map<String, Object> resultMap = new HashMap<>();
-			String systemNum = (String)param.get("systemNum");
+			Integer systemNum = (Integer)param.get("systemNum");
 			String enpId = ThreadLocalHolder.getUser().getEnpId();
-			List<SubSystemBo> list = equipmentService.querySub(systemNum,enpId);
+			List<SubSystemBo> list = equipmentService.querySub(systemNum+"",enpId);
 			resultMap.put("val", list);
 			resultMap.put("msg", "success");
 			resultMap.put("stat", 0);

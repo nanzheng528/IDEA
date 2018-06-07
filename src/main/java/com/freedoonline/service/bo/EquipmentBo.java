@@ -18,7 +18,7 @@ public class EquipmentBo extends PageRequest implements Serializable{
 	
 	private String equNum;			//设备编号
 	private String equName;			//设备名称
-	private Integer equLevel;		//设备重要性(等级)
+	private String equLevel;		//设备重要性(等级)
 	private String equModel;		//设备型号
 	private String equSerialNum;	//设备系列号
 	private Integer years ;			//使用年限
@@ -118,11 +118,11 @@ public class EquipmentBo extends PageRequest implements Serializable{
 		this.equName = equName;
 	}
 
-	public Integer getEquLevel() {
+	public String getEquLevel() {
 		return equLevel;
 	}
 
-	public void setEquLevel(Integer equLevel) {
+	public void setEquLevel(String equLevel) {
 		this.equLevel = equLevel;
 	}
 
