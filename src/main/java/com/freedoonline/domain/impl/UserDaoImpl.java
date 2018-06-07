@@ -193,7 +193,7 @@ public class UserDaoImpl implements UserDao{
 			buffer.append(" and u.enp_id like ?");
 			args.add("%"+user.getEnpId()+"%");
 		}
-		if(null == user.getRoleId()){
+		if(null != user.getRoleId()){
 			buffer.append(" and u.role_id = ?");
 			args.add(user.getRoleId());
 		}
