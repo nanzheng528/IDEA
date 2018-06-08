@@ -51,6 +51,9 @@ public class GuardRresponseMessage<T> {
 	public static <T> GuardRresponseMessage<T> creatByErrorMessage(String errorCode,T errorMessage){
 		return new GuardRresponseMessage<T>(ResponseCode.ERROR.getCode(),errorCode,errorMessage);
 	}
+	public static <T> GuardRresponseMessage<T> creatByErrorMessage(String errorMessage){
+		return new GuardRresponseMessage<T>(ResponseCode.ERROR.getCode(),errorMessage);
+	}
 	
 	
 	
