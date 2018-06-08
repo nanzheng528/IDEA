@@ -46,6 +46,11 @@ public class ProcessServiceImpl implements ProcessService {
 		}
 		return processDao.selectUserById(map);
 	}
+
+	@Override
+	public List<Map<String, Object>> queryProcess(Process process) {
+		return processDao.queryProcess(process);
+	}
 	
 	
 }

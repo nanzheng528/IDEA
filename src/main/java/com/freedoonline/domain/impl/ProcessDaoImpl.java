@@ -28,6 +28,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	static String INSERTSQL = "";
 	static String SELECT_USER_SQL = ""; 
 	static String SELECT_USEROBJECTID_SQL="";
+	static String SELECT_PROCESS_SQL = "";
 	
 	@Autowired
 	private BaseJdbcDao baseJdbcDao;
@@ -35,6 +36,7 @@ public class ProcessDaoImpl implements ProcessDao {
 		INSERTSQL = "INSERT INTO process(object_id, process_name, process_user, maintenace_user, approval_user, active, create_uesr, create_time, modify_user, modify_time, remark,enp_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 		SELECT_USEROBJECTID_SQL = " from process where object_id = ? ";
 		SELECT_USER_SQL = "select  user_name ,object_id from user where object_id in(";
+		SELECT_PROCESS_SQL = "select  object_id,process_name,process_user,maintenace_user,approval_user,remark from process where  active = '1' ";
 	}
 	@Override
 	public String addProcess(Process process) {
@@ -96,5 +98,38 @@ public class ProcessDaoImpl implements ProcessDao {
 		//去掉最后的,加上)
 		String lastSbSQL = SELECT_USER_SQL + param + ")";
 		return baseJdbcDao.queryForListMap(lastSbSQL, searchArgs.toArray());
+	}
+	
+	@Override
+	public List<Map<String, Object>> queryProcess(Process process) {
+		StringBuffer stringBuffer = new StringBuffer(SELECT_PROCESS_SQL);
+		ArrayList<Object> args = new ArrayList<>();
+		if(StringUtil.hasText(process.getEnpId())){
+			stringBuffer.append(" and enp_id = ? ");
+			args.add(process.getEnpId());
+		}
+		if(StringUtil.hasText(process.getObjectId())){
+			stringBuffer.append(" and object_id = ? ");
+			args.add(process.getObjectId());
+		}
+		if(StringUtil.hasText(process.getProcessName())){
+			stringBuffer.append(" and process_name like ? ");
+			args.add("%" + process.getProcessName() +"%");
+		}
+		if(StringUtil.hasText(process.getProcessUser())){
+			stringBuffer.append(" and process_user like ? ");
+			args.add("%" + process.getProcessUser() +"%");
+		}
+		if(StringUtil.hasText(process.getMaintenaceUser())){
+			stringBuffer.append(" and maintenace_user like ? ");
+			args.add("%" + process.getMaintenaceUser() +"%");
+		}
+		if(StringUtil.hasText(process.getApprovalUser())){
+			stringBuffer.append(" and and approval_user like ? ");
+			args.add("%" + process.getApprovalUser() +"%");
+		}
+		return baseJdbcDao.queryForListMap(stringBuffer.toString(), args.toArray());
+		
+		
 	}
 }

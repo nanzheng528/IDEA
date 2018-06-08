@@ -9,5 +9,7 @@ public interface ProcessDao {
 
 	String addProcess(Process process);
 	
-	List<Map<String,Object>> selectUserById(Map<String, Object> map);
+	List<Map<String, Object>> selectUserById(Map<String, Object> map);
+	
+	List<Map<String, Object>> queryProcess(Process process);
 }

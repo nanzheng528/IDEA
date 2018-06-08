@@ -50,11 +50,27 @@ public class ProcessController {
 	
 	@SuppressWarnings("rawtypes")
 	@RequestMapping("/queryUserListByCloumnName")
-	public GuardRresponseMessage query (HttpRequest request,@RequestBody Map<String, Object> map){
+	public GuardRresponseMessage queryUserListByCloumnName (HttpRequest request,@RequestBody Map<String, Object> map){
 		
 		try{
 			List<Map<String, Object>> userList = processService.queryUserListByCloumnName(map);
 		
+			return GuardRresponseMessage.creatBySuccessData(userList);
+		
+		} catch (BusinessException e) {
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(),e.getMessage());
+		} catch (Exception e){
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage());
+		}
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping("/queryProcess")
+	public GuardRresponseMessage queryProcess (HttpRequest request,@RequestBody Process process){
+		
+		try{
+			String enpId = ThreadLocalHolder.getUser().getEnpId();
+			process.setEnpId(enpId);
+			List<Map<String, Object>> userList = processService.queryProcess(process);
 			return GuardRresponseMessage.creatBySuccessData(userList);
 		
 		} catch (BusinessException e) {
