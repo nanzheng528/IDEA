@@ -79,4 +79,21 @@ public class ProcessController {
 			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage());
 		}
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@RequestMapping("/update")
+	public GuardRresponseMessage updateProcess (HttpRequest request,@RequestBody Process process){
+		try{
+			User user = ThreadLocalHolder.getUser();
+			process.setModifyUser(user.getObjectId());
+			String objectId =  processService.updateProcess(process);
+			return GuardRresponseMessage.creatBySuccessData(objectId);
+		
+		} catch (BusinessException e) {
+			return GuardRresponseMessage.creatByErrorMessage(e.getCode(),e.getMessage());
+		} catch (Exception e){
+			return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage());
+		}
+	}
+	
 }

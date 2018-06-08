@@ -21,6 +21,26 @@ public class Process implements Serializable {
 	private Date modifyTime;
 	private String remark;
 	private String enpId;
+	private String maintenaceType;
+	private String maintenaceTypeName;
+
+	
+	
+	public String getMaintenaceType() {
+		return maintenaceType;
+	}
+
+	public void setMaintenaceType(String maintenaceType) {
+		this.maintenaceType = maintenaceType;
+	}
+
+	public String getMaintenaceTypeName() {
+		return maintenaceTypeName;
+	}
+
+	public void setMaintenaceTypeName(String maintenaceTypeName) {
+		this.maintenaceTypeName = maintenaceTypeName;
+	}
 
 	public String getObjectId() {
 		return objectId;

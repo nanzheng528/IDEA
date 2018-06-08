@@ -14,4 +14,6 @@ public interface ProcessService {
 	List<Map<String, Object>> queryUserListByCloumnName(Map<String, Object> map);
 	
 	List<Map<String, Object>> queryProcess(Process process);
+	
+	String updateProcess(Process process);
 }
