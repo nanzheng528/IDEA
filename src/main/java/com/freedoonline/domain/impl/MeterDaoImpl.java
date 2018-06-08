@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -52,8 +53,8 @@ public class MeterDaoImpl implements MeterDao {
 	public String addMeter(Meter meter) {
 		String objectId = (!StringUtil.hasText(meter.getObjectId())) ? UUID.randomUUID().toString()
 				: meter.getObjectId();
-		Object[] args = { objectId, meter.getBuildingId(), meter.getBuildingAreaId(), meter.getName(),
-				meter.getNumber(), meter.getType(), meter.getEnergyType(), meter.getUnit(), meter.getServiceArea(),
+		Object[] args = { objectId, meter.getBuildingId(), meter.getBuildingAreaId(), meter.getName(),StringUtil.hasText(meter.getNumber()) == true ? meter.getNumber() : objectId, 
+				meter.getType(), meter.getEnergyType(), meter.getUnit(), meter.getServiceArea(),
 				meter.getUlAlarm(), meter.getLlAlarm(), meter.getStatus() != null ? meter.getStatus() : 1,
 				meter.getCreateUser(), meter.getCreateTime() != null ? meter.getCreateTime() : new Date(),
 				meter.getModifyUser(), meter.getModifyTime() != null ? meter.getModifyTime() : new Date(),
@@ -73,7 +74,7 @@ public class MeterDaoImpl implements MeterDao {
 
 	@Override
 	public int updateMeter(Meter meter) {
-		Object[] args = { meter.getName(), meter.getNumber(), meter.getType(), meter.getEnergyType(), meter.getUnit(),
+		Object[] args = { meter.getName(), meter.getNumber() , meter.getType(), meter.getEnergyType(), meter.getUnit(),
 				meter.getBuildingAreaId(), meter.getUlAlarm(), meter.getLlAlarm(),
 				meter.getStatus() != null ? meter.getStatus() : RUNSTATUS, meter.getModifyUser(),
 				meter.getModifyTime() != null ? meter.getModifyTime() : new Date(), meter.getObjectId()

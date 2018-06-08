@@ -44,9 +44,9 @@ public class MeterServiceImpl implements MeterService {
 		if (null == meter.getUnit()) {
 			throw new BusinessException("单位不能为空！", "403");
 		}
-		if (!StringUtil.hasText(meter.getNumber())) {
-			throw new BusinessException("表计编号不能为空！", "403");
-		}
+//		if (!StringUtil.hasText(meter.getNumber())) {
+//			throw new BusinessException("表计编号不能为空！", "403");
+//		}
 		if (null == meter.getType()) {
 			throw new BusinessException("表计类型不能为空！", "403");
 		}
