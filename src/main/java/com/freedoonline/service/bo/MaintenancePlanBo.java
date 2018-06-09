@@ -18,7 +18,7 @@ public class MaintenancePlanBo extends PageRequest{
 	private String name;			//任务名称
 	private String equId;			//设备ID
 	private String equName;			//设备名称
-	private Integer type;			//服务类型(1:一般检查 2:年检 3:日常维护 其他暂定)
+	private Integer type;			//服务类型
 	private Integer frequency;		//服务频率
 	private String maintenanceId;	//维护人员ID
 	private String maintenanceName;	//维护人员名称

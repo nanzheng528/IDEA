@@ -112,9 +112,9 @@ public class BuildingServiceImpl implements BuildingService {
 	  */
 	@Override
 	public Object queryBuildingArea(PageRequest pageRequest,BuildingArea buildingArea) throws BusinessException, Exception {
-		if (!StringUtil.hasText(buildingArea.getBuildingId())) {
-			throw new BusinessException("楼宇ID不能为空！", "403");
-		}
+//		if (!StringUtil.hasText(buildingArea.getBuildingId())) {
+//			throw new BusinessException("楼宇ID不能为空！", "403");
+//		}
 		return buildingDao.queryBuildingArea(pageRequest,buildingArea);
 	}
 	

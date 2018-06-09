@@ -7,6 +7,7 @@ public class BuildingAreaBo {
 	private String areaNum;
 	private String areaName;
 	private String parentId;
+	private Integer number;
 	
 	private Integer areaType;
 	private String areaTypeCn;
@@ -15,6 +16,12 @@ public class BuildingAreaBo {
 	private String floor;
 	private String remark;
 	
+	public Integer getNumber() {
+		return number;
+	}
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
 	public String getParentId() {
 		return parentId;
 	}

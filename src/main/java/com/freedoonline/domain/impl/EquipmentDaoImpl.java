@@ -112,12 +112,12 @@ public class EquipmentDaoImpl implements EquipmentDao {
 		}
 		if (StringUtil.hasText(queryBo.getBuildingFloor())) {
 			// 楼层
-			whereBuffer.append(" and b.building_floor like ? ");
+			whereBuffer.append(" and e.building_floor like ? ");
 			args.add("%" + queryBo.getBuildingFloor() + "%");
 		}
 		if (StringUtil.hasText(queryBo.getBuildingArea())) {
 			// 区域
-			whereBuffer.append(" and b.building_area like ? ");
+			whereBuffer.append(" and e.building_area like ? ");
 			args.add("%" + queryBo.getBuildingArea() + "%");
 		}
 		if (StringUtil.hasText(queryBo.getEquNum())) {
