@@ -1,5 +1,7 @@
 package com.freedoonline.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -257,12 +259,28 @@ public class UserServiceImpl implements UserService{
 		
 		List<String> columnNames = new ArrayList<String>();
 		List<Object> columnValues = new ArrayList<Object>();
+		if(null != paramMap.get("birthday")){
+		columnNames.add("birthday");
+		columnValues.add(DateTransform((Long)paramMap.get("birthday")));
+		paramMap.remove("birthday");}
+		if(null != paramMap.get("empDate")){
+		columnNames.add("emp_date");
+		columnValues.add(DateTransform((Long)paramMap.get("empDate")));
+		paramMap.remove("empDate");
+		}
+		if(null != paramMap.get("empEndDate")){
+		columnNames.add("emp_end_date");
+		columnValues.add(DateTransform((Long)paramMap.get("empEndDate")));
+		paramMap.remove("empEndDate");}
 		for(String key:paramMap.keySet()){
 			columnNames.add(TransformUtil.humpToLine2(key));  //将驼峰命名转换为下划线
 			columnValues.add(paramMap.get(key));
 		}
+		
 		columnNames.add("modify_time");
 		columnValues.add(new Date());
+		
+		
 		if(this.updateUser(columnNames.toArray(new String[columnNames.size()]),columnValues.toArray(),
 				new String[]{"object_id"},new Object[]{objectId},null)== true ){
 			return objectId;
@@ -280,5 +298,13 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Page queryUserList(PageRequest pageRequest,User user) throws BusinessException, Exception {
 		return userDao.queryUserList(pageRequest, user);
+	}
+	
+	private Date DateTransform(Long longTime) throws ParseException{
+		  SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		  Long time=new Long(longTime); 
+		  String d = format.format(time); 
+		  Date date=format.parse(d); 
+		return date;
 	}
 }
