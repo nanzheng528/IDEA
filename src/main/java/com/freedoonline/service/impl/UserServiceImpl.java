@@ -198,7 +198,6 @@ public class UserServiceImpl implements UserService{
 				BusinessResult sendMsmResult = (BusinessResult) msmService.sendMsm(sendMessageParamMap);
 				if(sendMsmResult.getSuccess() != null && sendMsmResult.getSuccess() == 1){
 					logger.info("-------------发送短信成功-------------");
-					
 				} else {
 					logger.error("--------------发送短信失败-------------");
 					throw new BusinessException("发送短信失败！","501");

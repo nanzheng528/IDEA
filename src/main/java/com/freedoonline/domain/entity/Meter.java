@@ -20,18 +20,22 @@ public class Meter implements Serializable {
 	private String name;				//表名
 	private String number;				//编号
 	private Integer type;				//表的类型
+	private String typeName;            //表名称
 	private Integer energyType;			//能耗类别
+	private String energyName;         //能耗名称
 //	private String floor;				//楼层
 //	private String location;			//位置描述
 	private String buildingAreaId;		//楼宇区域ID
+	private String buildingAreaName;    //位置名称
 	private String serviceArea;			//服务区域
 	private String ulAlarm;				//上限警报值
 	private String llAlarm;				//下限警报值
 	private Integer status;				//运行状态 0:未运行   1:正在运行
 	private Integer unit;				//单位
-	private String typeValue;  			//表计类型值
-	private String typeValueEn; 		//表计类型英文
-	private String areaName ; 			//区域名称
+	private String unitName;            //单位名称
+//	private String typeValue;  			//表计类型值
+//	private String typeValueEn; 		//表计类型英文
+//	private String areaName ; 			//区域名称
 	
 	
 	private String createUser;
@@ -44,24 +48,35 @@ public class Meter implements Serializable {
 	
 	
 	
-	public String getTypeValue() {
-		return typeValue;
+	public String getTypeName() {
+		return typeName;
 	}
-	public void setTypeValue(String typeValue) {
-		this.typeValue = typeValue;
+	
+	public String getEnergyName() {
+		return energyName;
 	}
-	public String getTypeValueEn() {
-		return typeValueEn;
+
+	public void setEnergyName(String energyName) {
+		this.energyName = energyName;
 	}
-	public void setTypeValueEn(String typeValueEn) {
-		this.typeValueEn = typeValueEn;
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
-	public String getAreaName() {
-		return areaName;
+	public String getBuildingAreaName() {
+		return buildingAreaName;
 	}
-	public void setAreaName(String areaName) {
-		this.areaName = areaName;
+	public void setBuildingAreaName(String buildingAreaName) {
+		this.buildingAreaName = buildingAreaName;
 	}
+	public String getUnitName() {
+		return unitName;
+	}
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
+
+
 	public String getNumber() {
 		return number;
 	}
