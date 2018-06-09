@@ -21,16 +21,17 @@ public class Process implements Serializable {
 	private Date modifyTime;
 	private String remark;
 	private String enpId;
-	private String maintenaceType;
+	private Integer maintenaceType;
 	private String maintenaceTypeName;
 
 	
 	
-	public String getMaintenaceType() {
+
+	public Integer getMaintenaceType() {
 		return maintenaceType;
 	}
 
-	public void setMaintenaceType(String maintenaceType) {
+	public void setMaintenaceType(Integer maintenaceType) {
 		this.maintenaceType = maintenaceType;
 	}
 

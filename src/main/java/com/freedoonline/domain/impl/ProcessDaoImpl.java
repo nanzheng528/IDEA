@@ -46,7 +46,7 @@ public class ProcessDaoImpl implements ProcessDao {
 			objectId,process.getProcessName(),process.getProcessUser(),process.getMaintenaceUser(),process.getApprovalUser(),
 			process.getActive() == null ? 1 : process.getActive() ,process.getCreateUser(), process.getCreateTime() != null ? process.getCreateTime() : new Date(),process.getModifyUser(), process.getModifyTime() != null ? process.getModifyTime() : new Date(),
 					process.getRemark(),process.getEnpId(),
-					StringUtil.hasText(process.getMaintenaceType()) == true ? process.getMaintenaceType() : "1"
+					null != process.getMaintenaceType() == true ? process.getMaintenaceType() : "1"
 		};
 		
 		if(baseJdbcDao.save(INSERTSQL, args) == 1){
@@ -62,7 +62,7 @@ public class ProcessDaoImpl implements ProcessDao {
 		
 		StringBuffer stringBuffer = new StringBuffer(SELECT_USEROBJECTID_SQL);
 		String objectId = (String) map.get("objectId");
-		String maintenaceType = (String) map.get("maintenaceType");
+		Integer maintenaceType = (Integer) map.get("maintenaceType");
 		if(PROCESS_USER.equals(map.get("searchUser"))){
 			
 			return selectUserObejecIdListByCloumn(PROCESS_USER,objectId,maintenaceType);
@@ -86,7 +86,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<Map<String, Object>> selectUserObejecIdListByCloumn(String searchCloumn,String objectId,String maintenaceType){
+	private List<Map<String, Object>> selectUserObejecIdListByCloumn(String searchCloumn,String objectId,Integer maintenaceType){
 		Object[] args = {objectId,maintenaceType};
 		//可以查询出想要查出列表的objectid
 		StringBuffer searchBuffer  = new StringBuffer("select " + searchCloumn);
@@ -114,7 +114,7 @@ public class ProcessDaoImpl implements ProcessDao {
 			stringBuffer.append(" and object_id = ? ");
 			args.add(process.getObjectId());
 		}
-		if(StringUtil.hasText(process.getMaintenaceType())){
+		if(null != process.getMaintenaceType()){
 			stringBuffer.append(" and maintenace_type = ? ");
 			args.add(process.getMaintenaceType());
 		}

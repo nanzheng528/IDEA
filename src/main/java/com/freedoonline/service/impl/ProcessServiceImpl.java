@@ -47,7 +47,7 @@ public class ProcessServiceImpl implements ProcessService {
 		if (!StringUtil.hasText((String)map.get("searchUser"))) {
 			throw new BusinessException("查询人员列表为空", "403");
 		}
-		if (!StringUtil.hasText((String)map.get("objectId"))&&!StringUtil.hasText((String)map.get("maintenaceType"))) {
+		if (!StringUtil.hasText((String)map.get("objectId"))&& null == map.get("maintenaceType")) {
 			throw new BusinessException("流程ID和巡检类型不能同时为空", "403");
 		}
 		return processDao.selectUserById(map);
