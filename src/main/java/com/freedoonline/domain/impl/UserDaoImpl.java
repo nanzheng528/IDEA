@@ -124,7 +124,6 @@ public class UserDaoImpl implements UserDao{
 				,user.getModifyTime() != null ? user.getModifyTime() : new Date(),user.getActive(),user.getRemark()};
 		if(baseJdbcDao.save(INSERT_USER_SQL, args) == 1){
 			user.setObjectId(objectId);
-			
 		} else {
 			user.setObjectId("");
 		};
