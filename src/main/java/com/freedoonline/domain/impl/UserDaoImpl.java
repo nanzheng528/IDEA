@@ -96,7 +96,6 @@ public class UserDaoImpl implements UserDao{
 		String objectId = StringUtil.hasText(user.getObjectId())?user.getObjectId():UUID.randomUUID().toString();
 		user.setActive(1);
 		user.setStatus(1);
-		user.setRoleId(2);
 		try {
 			//如果密码为空，则随机生成6位数字
 			if(!StringUtil.hasText(user.getPassword())){
@@ -121,7 +120,7 @@ public class UserDaoImpl implements UserDao{
 				,user.getPassword(),user.getMobileNum(),user.getMainMobileNum(),user.getLanguage(),user.getSex()
 				,user.getBirthday(),user.getEmpDate(),user.getEmpEndDate(),user.getApprovalLimits(),user.getIdCard()
 				,user.getJob(),user.getIsOutsourcing() == null ? 0 : user.getIsOutsourcing(),user.getEmail(),user.getStatus()
-				,user.getProfilePhoto(),user.getRoleId(),user.getCreateUser(),user.getCreateTime() != null ? user.getCreateTime() : new Date(),user.getModifyUser()
+				,user.getProfilePhoto(),null == user.getRoleId()? 2 : user.getRoleId(),user.getCreateUser(),user.getCreateTime() != null ? user.getCreateTime() : new Date(),user.getModifyUser()
 				,user.getModifyTime() != null ? user.getModifyTime() : new Date(),user.getActive(),user.getRemark()};
 		if(baseJdbcDao.save(INSERT_USER_SQL, args) == 1){
 			user.setObjectId(objectId);
