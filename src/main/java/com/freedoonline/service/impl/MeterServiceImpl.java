@@ -15,6 +15,7 @@ import com.freedoonline.domain.MeterDao;
 import com.freedoonline.domain.entity.Meter;
 import com.freedoonline.service.MeterService;
 import com.freedoonline.service.bo.MeterBo;
+import com.netflix.infix.lang.infix.antlr.EventFilterParser.null_predicate_return;
 
 import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
@@ -44,9 +45,9 @@ public class MeterServiceImpl implements MeterService {
 		if (null == meter.getUnit()) {
 			throw new BusinessException("单位不能为空！", "403");
 		}
-//		if (!StringUtil.hasText(meter.getNumber())) {
-//			throw new BusinessException("表计编号不能为空！", "403");
-//		}
+		if (!StringUtil.hasText(meter.getNumber())) {
+			throw new BusinessException("表计编号不能为空！", "403");
+		}
 		if (null == meter.getType()) {
 			throw new BusinessException("表计类型不能为空！", "403");
 		}
@@ -137,13 +138,13 @@ public class MeterServiceImpl implements MeterService {
 	@Override
 	public List queryPosition(Map<String,Object> searchMap) {
 		List<Map<String, Object>> positionList = MeterDao.queryPosition(searchMap);
-		Map<String, Object> leafMap = new HashMap<>();
-		leafMap.put("leaf", false);
-		if(null == positionList || positionList.size() == 0 ){
-			leafMap.replace("leaf", true);
-			positionList.add(leafMap);
-		} else {
-			positionList.add(leafMap);
+		for(Map<String, Object> map : positionList){
+			List<Map<String, Object>> leafList = MeterDao.queryPosition(map);
+			if(null == leafList || leafList.size() < 1){
+				map.put("leaf", true);
+			} else {
+			map.put("leaf", false);
+			}
 		}
 		return positionList;
 	}
