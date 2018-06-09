@@ -56,9 +56,9 @@ public class EquipmentServiceImpl implements EquipmentService {
 //		if (!StringUtil.hasText(queryBo.getBuildingFloor())) {
 //			throw new BusinessException("所属楼层不能为空！", "403");
 //		}
-		if (!StringUtil.hasText(queryBo.getEquNum())) {
-			throw new BusinessException("设备编号不能为空！", "403");
-		}
+//		if (!StringUtil.hasText(queryBo.getEquNum())) {
+//			throw new BusinessException("设备编号不能为空！", "403");
+//		}
 		if (!StringUtil.hasText(queryBo.getEquName())) {
 			throw new BusinessException("设备名称不能为空！", "403");
 		}
@@ -74,6 +74,12 @@ public class EquipmentServiceImpl implements EquipmentService {
 		if (!StringUtil.hasText(queryBo.getBuildingAreaId())) {
 			throw new BusinessException("区域ID不能为空！", "403");
 		}
+		if (!StringUtil.hasText(queryBo.getSubNum())) {
+			throw new BusinessException("子系统编号不能为空！", "403");
+		}
+//		if (null != queryBo.getEquLevel()) {
+//			throw new BusinessException("子系统编号不能为空！", "403");
+//		}
 		BuildingArea buildingArea = buildingDao.queryBaById(queryBo.getBuildingAreaId(),queryBo.getEnpId());
 		if(null!=buildingArea){
 			queryBo.setBuildingFloor(buildingArea.getFloor());
@@ -417,13 +423,15 @@ public class EquipmentServiceImpl implements EquipmentService {
 		String enpId = (String) paramMap.get("enpId");
 		String buildingAreaId = (String) paramMap.get("buildingAreaId");
 		
-		BuildingArea buildingArea = buildingDao.queryBaById(buildingAreaId,enpId);
-		if(null!=buildingArea){
-			paramMap.put("buildingId", buildingArea.getBuildingId());
-			paramMap.put("buildingFloor", buildingArea.getFloor());
-			paramMap.put("buildingArea", buildingArea.getAreaName());
-		}else{
-			throw new BusinessException("区域ID不存在！", "403");
+		if(buildingAreaId!=null){
+			BuildingArea buildingArea = buildingDao.queryBaById(buildingAreaId,enpId);
+			if(null!=buildingArea){
+				paramMap.put("buildingId", buildingArea.getBuildingId());
+				paramMap.put("buildingFloor", buildingArea.getFloor());
+				paramMap.put("buildingArea", buildingArea.getAreaName());
+			}else{
+				throw new BusinessException("区域ID不存在！", "403");
+			}
 		}
 		
 		paramMap.remove("objectId");
@@ -483,19 +491,26 @@ public class EquipmentServiceImpl implements EquipmentService {
 	public Object updateMaintenancePlan(Map<String, Object> paramMap) throws BusinessException, Exception {
 		//获取objectId
 		String objectId = (String) paramMap.get("objectId");
-		//String enpId = (String) paramMap.get("enpId");
-		Integer fault = (Integer) paramMap.get("fault");
+		Long planStartTime = (Long) paramMap.get("planStartTime");
 		
-		if (!StringUtil.hasText(fault.toString())) {
-			throw new BusinessException("维护状态不能为空！", "403");
+		//String enpId = (String) paramMap.get("enpId");
+//		Integer fault = (Integer) paramMap.get("fault");
+		
+//		if (!StringUtil.hasText(fault.toString())) {
+//			throw new BusinessException("维护状态不能为空！", "403");
+//		}
+		if(planStartTime!=null){
+			paramMap.put("planStartTime", new Date(planStartTime));
 		}
 		paramMap.remove("objectId");
 		paramMap.remove("createUser");
 		paramMap.remove("createTime");
 		paramMap.remove("modifyTime");
-		paramMap.remove("active");
+		//paramMap.remove("active");
 		//paramMap.remove("enpId");
-		
+		if (paramMap.size() == 0) {
+			throw new BusinessException("要更新的数据不存在！", "403");
+		}
 		List<String> columnNames = new ArrayList<String>();
 		List<Object> columnValues = new ArrayList<Object>();
 		for (String key : paramMap.keySet()) {
@@ -505,10 +520,10 @@ public class EquipmentServiceImpl implements EquipmentService {
 		columnNames.add("modify_time");
 		columnValues.add(new Date());
 		
-		columnNames.add("status");
-		columnValues.add(1);
-		columnNames.add("actual_time");
-		columnValues.add(new Date());
+//		columnNames.add("status");
+//		columnValues.add(1);
+//		columnNames.add("actual_time");
+//		columnValues.add(new Date());
 		this.update(columnNames.toArray(new String[columnNames.size()]), columnValues.toArray(),
 				new String[] { "object_id" }, new Object[] { objectId }, null,"maintenace_plan");
 		return objectId;

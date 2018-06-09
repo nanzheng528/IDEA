@@ -98,6 +98,11 @@ public class BuildingDaoImpl implements BuildingDao {
 	public Object queryBuildingArea(PageRequest pageRequest,BuildingArea buildingArea) {
 		StringBuffer buffer = new StringBuffer(SELECT_BUILDING_AREA_SQL);
 		buffer.append(" where 1=1 ");
+		if(buildingArea.getSign()!=null){
+			if(buildingArea.getSign()==1){
+				buffer.append(" and ba.parent_id is null");
+			}
+		}
 		Map<String, Object> map = getQueryCondition(buildingArea);
 		buffer.append(map.get("where")); // 拼接条件语句
 		Object[] args = (Object[]) map.get("args");
@@ -109,7 +114,7 @@ public class BuildingDaoImpl implements BuildingDao {
 		// 拼接查询条件
 		StringBuffer whereBuffer = new StringBuffer();
 		List<Object> args = new ArrayList<Object>();
-
+		
 		if (StringUtil.hasText(queryBo.getBuildingId())) {
 			// 楼宇ID
 			whereBuffer.append(" and ba.building_id = ? ");
@@ -119,6 +124,11 @@ public class BuildingDaoImpl implements BuildingDao {
 			// 企业ID
 			whereBuffer.append(" and b.enp_id = ? ");
 			args.add(queryBo.getEnpId());
+		}
+		if (StringUtil.hasText(queryBo.getParentId())) {
+			// 父节点ID
+			whereBuffer.append(" and ba.parent_id = ? ");
+			args.add(queryBo.getParentId());
 		}
 		if (StringUtil.hasText(queryBo.getObjectId())) {
 			// 明细查询

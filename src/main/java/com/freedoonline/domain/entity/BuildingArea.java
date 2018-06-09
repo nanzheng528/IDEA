@@ -24,6 +24,7 @@ public class BuildingArea extends PageRequest implements Serializable{
 	private String floor;
 	private String purpose;			//用途
 	private String parentId;
+	private Integer number;
 
 	private String enpId;
 	private String createUser;
@@ -32,7 +33,20 @@ public class BuildingArea extends PageRequest implements Serializable{
 	private Date modifyTime;
 	private String remark;
 	private Integer active;
+	private Integer Sign;
 	
+	public Integer getNumber() {
+		return number;
+	}
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+	public Integer getSign() {
+		return Sign;
+	}
+	public void setSign(Integer sign) {
+		Sign = sign;
+	}
 	public String getParentId() {
 		return parentId;
 	}
