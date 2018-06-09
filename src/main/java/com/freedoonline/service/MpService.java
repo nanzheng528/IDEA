@@ -16,4 +16,6 @@ public interface MpService {
 	public Object addMp(Map<String, Object> param,User user) throws BusinessException,Exception;
 	// 获取巡检计划列表
 	public Page<MaintenancePlan> queryListPlan(PageRequest pageRequest,MaintenancePlanBo queryBo,User user)throws BusinessException,Exception;
+	// 获取统计图
+	public Object stats(PageRequest pageRequest,MaintenancePlanBo queryBo,User user)throws BusinessException,Exception;
 }

@@ -493,6 +493,18 @@ public class EquipmentServiceImpl implements EquipmentService {
 		String objectId = (String) paramMap.get("objectId");
 		Long planStartTime = (Long) paramMap.get("planStartTime");
 		
+		Integer status = (Integer) paramMap.get("status");
+		Integer fault = (Integer) paramMap.get("fault");
+		
+		//维护计划完成
+		if(status!=null){
+			if(status == 1 && fault != null){
+				paramMap.put("actualTime", new Date());
+			}else if(status == 1 && fault == null){
+				throw new BusinessException("维护计划完成后请更新设备状态！", "403");
+			}
+		}
+		
 		//String enpId = (String) paramMap.get("enpId");
 //		Integer fault = (Integer) paramMap.get("fault");
 		

@@ -55,7 +55,7 @@ public class EquipmentDaoImpl implements EquipmentDao {
 			pageRequest.setOrderBy(" e.modify_time DESC ");
 		}
 		StringBuffer buffer = new StringBuffer(SELECT_EQUIPMENT_SQL);
-		buffer.append(" where 1=1 ");
+		buffer.append(" where 1=1 and e.active=1 ");
 		if (StringUtil.hasText(queryBo.getKeyword())) {
 			buffer.append(" and (es.sub_name like '%" + queryBo.getKeyword() + "%'  or e.equ_name like '%"
 					+ queryBo.getKeyword() + "%' or e.building_area like '%" + queryBo.getKeyword()

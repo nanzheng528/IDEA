@@ -72,4 +72,19 @@ public class MpController {
 			return new BusinessResult(-1, "400", e.getMessage());
 		}
 	}
+	
+	@PostMapping("stats")
+	public Object stats(HttpServletRequest request,@RequestBody MaintenancePlanBo queryBo){
+		try{
+			User user = ThreadLocalHolder.getUser();
+			queryBo.setEnpId(user.getEnpId());
+			PageRequest pageRequest = new PageRequest(queryBo.getPageNum(),queryBo.getPageSize(),queryBo.getOrderBy(),queryBo.isCountTotal());
+			Map<String,Object> result = (Map<String,Object>)mpService.stats(pageRequest, queryBo,user);
+			return result;
+		}catch(BusinessException e){
+			return new BusinessResult(-1, e.getCode(), e.getMessage());
+		}catch(Exception e){
+			return new BusinessResult(-1, "400", e.getMessage());
+		}
+	}
 }
