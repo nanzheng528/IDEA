@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao{
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id from user ";
-		SELECTSQL = "select u.object_id, u.account, u.emp_id,u.department_id,u.position_id,u.user_name, u.status ,u.enp_id ,b.building_name ,e.enterprise_name from user  u left join building b on u.building_id = b.object_id left join enterprise e on e.object_id = u.enp_id  where u.active = '1'";
+		SELECTSQL = "select u.object_id, u.account, u.emp_id, u.role_id,r.value as role_name ,u.profile_photo,u.department_id,d.value as department_name, u.position_id,p.value as position_name, u.user_name,u.address,u.superior_id,u.mobile_num,u.main_mobile_num,u.language,u.sex,u.birthday,u.emp_date,u.emp_end_date,u.approval_limits,u.id_card,u.job,u.email,u.remark, u.status ,u.enp_id ,e.enterprise_name as emp_name,u.building_id, b.area_name as building_name from user  u left join building_area b on u.building_id = b.object_id left join enterprise e on e.object_id = u.enp_id left join (select code,value,value_en from domain_table where domain_name = 'department_type_1') d on d.code = u.department_id left join (select code,value,value_en from domain_table where domain_name='department_type_2') p on p.code = u.position_id  left join (select code,value,value_en from domain_table where domain_name = 'user_permission') r on r.code = u.role_id  where u.active = '1'";
 		INSERT_USER_SQL = " INSERT INTO user (object_id, account, emp_id,department_id,position_id,address,building_id,superior_id,enp_id,user_name, password, mobile_num,main_mobile_num,language,sex,birthday,emp_date,emp_end_date,approval_limits,id_card,job,is_outsourcing, email, status, profile_photo,role_id, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	
@@ -151,6 +151,7 @@ public class UserDaoImpl implements UserDao{
 		return user;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Page queryUserList(PageRequest pageRequest, User user) {
 		if(!StringUtil.hasText(pageRequest.getOrderBy())){
