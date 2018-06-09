@@ -1,5 +1,6 @@
 package com.freedoonline.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,5 +142,27 @@ public class UserController {
 				e.printStackTrace();
 				return GuardRresponseMessage.creatByErrorMessage("400",e.getMessage() );
 			} 
+	}
+	
+	@PostMapping("/add")
+	public Object addUser(HttpServletRequest request,@RequestBody User user){
+		try{
+			User userBo = ThreadLocalHolder.getUser();
+			if( userBo != null ){
+				//从当前线程中获取登录的用户
+				user.setEnpId(userBo.getEnpId());//设置当前添加人的企业
+				user.setCreateUser(userBo.getObjectId());//设置创建人
+				user.setModifyUser(userBo.getObjectId());//设置修改人
+			}
+			//添加用户
+			User addSuccessUser =  (User) userService.addUser(user);
+			ArrayList<Object> arrayList = new ArrayList<>();
+			arrayList.add(addSuccessUser.getObjectId());
+			return new BusinessResult(arrayList);
+		}catch(BusinessException e){
+			return new BusinessResult(-1, e.getCode(), e.getMessage());
+		}catch(Exception e){
+			return new BusinessResult(-1, "400", e.getMessage());
+		}
 	}
 }
