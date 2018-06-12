@@ -36,7 +36,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	static {
 		INSERTSQL = "INSERT INTO process(object_id, process_name, process_user, maintenace_user, approval_user, active, create_uesr, create_time, modify_user, modify_time, remark,enp_id ,maintenace_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		SELECT_USEROBJECTID_SQL = " from process where object_id = ? or maintenace_type = ?";
-		SELECT_USER_SQL = "select  user_name ,object_id from user where and active = 1 and object_id in(";
+		SELECT_USER_SQL = "select  user_name ,object_id from user where  active = 1 and object_id in(";
 		SELECT_PROCESS_SQL = "select  object_id,process_name,process_user,maintenace_type,maintenace_user,approval_user,remark from process where  active = '1' ";
 	}
 	@Override
