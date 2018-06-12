@@ -56,9 +56,16 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public Object validateUser(String loginNum, String password) {
 		StringBuffer buffer = new StringBuffer(SELECT_USER_SQL);
-		buffer.append(" where mobile_num = ? and active = 1 and status =1 and  password= ?");
-		Object[] args = {loginNum,password};
-		User user = (User) baseJdbcDao.queryForObject(buffer.toString(), args, User.class);
+		ArrayList<Object> arrayList = new ArrayList<>();
+		if(StringUtil.hasText(loginNum)&&!StringUtil.hasText(password)){
+			buffer.append("where mobile_num = ? and active = 1 and status =1");
+			arrayList.add(loginNum);
+		} else {
+			buffer.append(" where mobile_num = ? and active = 1 and status =1 and  password= ?");
+			arrayList.add(loginNum);
+			arrayList.add(password);
+		}
+		User user = (User) baseJdbcDao.queryForObject(buffer.toString(), arrayList.toArray(), User.class);
 		return user;
 	}
 	

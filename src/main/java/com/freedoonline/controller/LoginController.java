@@ -1,7 +1,5 @@
 package com.freedoonline.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.freedoonline.common.interceptor.ThreadLocalHolder;
-import com.freedoonline.common.response.GuardRresponseMessage;
 import com.freedoonline.domain.entity.User;
 import com.freedoonline.service.UserService;
 
@@ -65,11 +61,15 @@ public class LoginController extends BaseController{
 			return new BusinessResult(-1, "403", "密码不能为空！");
 		}
 		try{
+			User userAccount = (User) userService.validateUser(loginNum,"");
+			if (null == userAccount) {
+				return new BusinessResult(-1, "403", "用户不存在！");
+			}
 			password=CryptUtil.md5Encrypt(password);
 			//验证用户账号是否合法
 			User user = (User)userService.validateUser(loginNum, password);
 			if(null == user){
-				return new BusinessResult(-1, "403", "用户名密码不正确！");
+				return new BusinessResult(-1, "403", "密码不正确！");
 			}
 			String token = userService.createUserToken(request, user);
 			resultMap.put("val", token);
