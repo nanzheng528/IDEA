@@ -68,15 +68,15 @@ public class ProcessDaoImpl implements ProcessDao {
 		Integer maintenaceType = (Integer) map.get("maintenaceType");
 		if (PROCESS_USER.equals(map.get("searchUser"))) {
 
-			return selectUserObejecIdListByCloumn(PROCESS_USER, objectId, maintenaceType);
+			return selectUserObejecIdListByColumn(PROCESS_USER, objectId, maintenaceType);
 
 		} else if (MAINTENACE_USER.equals(map.get("searchUser"))) {
 
-			return selectUserObejecIdListByCloumn(MAINTENACE_USER, objectId, maintenaceType);
+			return selectUserObejecIdListByColumn(MAINTENACE_USER, objectId, maintenaceType);
 
 		} else if (APPROVAL_USER.equals(map.get("searchUser"))) {
 
-			return selectUserObejecIdListByCloumn(APPROVAL_USER, objectId, maintenaceType);
+			return selectUserObejecIdListByColumn(APPROVAL_USER, objectId, maintenaceType);
 		}
 
 		else {
@@ -87,7 +87,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Map<String, Object>> selectUserObejecIdListByCloumn(String searchCloumn, String objectId,
+	private List<Map<String, Object>> selectUserObejecIdListByColumn(String searchCloumn, String objectId,
 			Integer maintenaceType) {
 		Object[] args = { objectId, maintenaceType };
 		// 可以查询出想要查出列表的objectId集合
