@@ -63,7 +63,6 @@ public class ProcessDaoImpl implements ProcessDao {
 	@Override
 	public List<Map<String, Object>> selectUserByColumnName(Map<String, Object> map) {
 
-		StringBuffer stringBuffer = new StringBuffer(SELECT_USEROBJECTID_SQL);
 		String objectId = (String) map.get("objectId");
 		Integer maintenaceType = (Integer) map.get("maintenaceType");
 		if (PROCESS_USER.equals(map.get("searchUser"))) {
