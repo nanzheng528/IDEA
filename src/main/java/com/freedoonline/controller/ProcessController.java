@@ -29,6 +29,7 @@ public class ProcessController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping("/addProcess")
 	public GuardRresponseMessage addProcess (HttpRequest request,@RequestBody Process process){
+		//从当前线程取出当前user的objectId，和企业id
 		User user = ThreadLocalHolder.getUser();
 		process.setCreateUser(user.getObjectId());
 		process.setModifyUser(user.getObjectId());

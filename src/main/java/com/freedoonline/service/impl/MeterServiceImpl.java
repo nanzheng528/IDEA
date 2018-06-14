@@ -30,6 +30,14 @@ public class MeterServiceImpl implements MeterService {
 	@Resource
 	private MeterDao MeterDao;
 	
+	/** 
+	* @Title: addMeter 
+	* @Description 添加表计服务
+	* @param meter
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午2:12:45
+	*/ 
 	@Override
 	public String addMeter(Meter meter) {
 		logger.info("--------------开始添加meter数据----------------");
@@ -67,6 +75,16 @@ public class MeterServiceImpl implements MeterService {
 		return Objectid;
 	}
 
+	/** 
+	* @Title: delMeter 
+	* @Description 删除表计服务
+	* @param map
+	* @return
+	* @throws BusinessException
+	* @throws Exception 
+	* @author 南征
+	* @date 2018年6月14日下午2:12:56
+	*/ 
 	@Override
 	public Boolean delMeter(Map<String, Object> map) throws BusinessException, Exception {
 		logger.info("--------------开始删除meter数据----------------");
@@ -84,6 +102,16 @@ public class MeterServiceImpl implements MeterService {
 		return 0;
 	}
 
+	/** 
+	* @Title: updateMeter 
+	* @Description 更新表计
+	* @param meter
+	* @return
+	* @throws BusinessException
+	* @throws Exception 
+	* @author 南征
+	* @date 2018年6月14日下午2:15:57
+	*/ 
 	@Override
 	public Boolean updateMeter(Meter meter) throws BusinessException, Exception {
 		logger.info("--------------开始更新meter数据----------------");
@@ -128,21 +156,42 @@ public class MeterServiceImpl implements MeterService {
 		}
 	}
 
+	/** 
+	* @Title: queryMeter 
+	* @Description 查询表计
+	* @param pageRequest
+	* @param meter
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午2:15:40
+	*/ 
 	@Override
 	public Page<Meter> queryMeter(PageRequest pageRequest, MeterBo meter) {
 		logger.info("--------------开始查询meter数据业务----------------");
 		return MeterDao.queryMeterData(pageRequest, meter);
 	}
 
+	/** 
+	* @Title: queryPosition 
+	* @Description 查询区域位置信息
+	* @param searchMap
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午2:13:22
+	*/ 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List queryPosition(Map<String,Object> searchMap) {
 		List<Map<String, Object>> positionList = MeterDao.queryPosition(searchMap);
+		//遍历当前树节点
 		for(Map<String, Object> map : positionList){
+			//查询当前节点下是否有子节点
 			List<Map<String, Object>> leafList = MeterDao.queryPosition(map);
+			// 当前为叶子节点
 			if(null == leafList || leafList.size() < 1){
 				map.put("leaf", true);
 			} else {
+			// 当前不是叶子节点
 			map.put("leaf", false);
 			}
 		}

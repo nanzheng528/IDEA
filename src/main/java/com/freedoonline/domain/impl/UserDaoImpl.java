@@ -31,14 +31,30 @@ public class UserDaoImpl implements UserDao{
 	@Autowired
 	private BaseJdbcDao baseJdbcDao;
 	
+	/**
+	 * fieldType: String
+	 * field: SELECT_USER_SQL
+	 * @Description 查询用户信息sql
+	 */
 	static String SELECT_USER_SQL = "";
+	
+	/**
+	 * fieldType: String
+	 * field: INSERT_USER_SQL
+	 * @Description 插入用户
+	 */
 	static String INSERT_USER_SQL = "";
-	static String SELECTSQL = "";
+	/**
+	 * fieldType: String
+	 * field: SELECT_USERLIST_SQL
+	 * @Description 查询用户列表信息
+	 */
+	static String SELECT_USERLIST_SQL = "";
 	static String SELECT_USER_BYROLE_SQL="";
 	
 	static {
 		SELECT_USER_SQL = "select object_id, user_name, mobile_num, profile_photo, create_user, create_time, modify_user, modify_time, remark ,enp_id,role_id from user ";
-		SELECTSQL = "select u.object_id, u.account, u.emp_id, u.role_id,r.value as role_name ,u.profile_photo,u.department_id,d.value as department_name, u.position_id,p.value as position_name, u.user_name,u.address,u.superior_id,u.mobile_num,u.main_mobile_num,u.language,u.sex,u.birthday,u.emp_date,u.emp_end_date,u.approval_limits,u.id_card,u.job,u.email,u.remark, u.status ,u.enp_id ,e.enterprise_name as emp_name,u.building_id, b.area_name as building_name from user  u left join building_area b on u.building_id = b.object_id left join enterprise e on e.object_id = u.enp_id left join (select code,value,value_en from domain_table where domain_name = 'department_type_1') d on d.code = u.department_id left join (select code,value,value_en from domain_table where domain_name='department_type_2') p on p.code = u.position_id  left join (select code,value,value_en from domain_table where domain_name = 'user_permission') r on r.code = u.role_id  where u.active = '1'";
+		SELECT_USERLIST_SQL = "select u.object_id, u.account, u.emp_id, u.role_id,r.value as role_name ,u.profile_photo,u.department_id,d.value as department_name, u.position_id,p.value as position_name, u.user_name,u.address,u.superior_id,u.mobile_num,u.main_mobile_num,u.language,u.sex,u.birthday,u.emp_date,u.emp_end_date,u.approval_limits,u.id_card,u.job,u.email,u.remark, u.status ,u.enp_id ,e.enterprise_name as emp_name,u.building_id, b.area_name as building_name from user  u left join building_area b on u.building_id = b.object_id left join enterprise e on e.object_id = u.enp_id left join (select code,value,value_en from domain_table where domain_name = 'department_type_1') d on d.code = u.department_id left join (select code,value,value_en from domain_table where domain_name='department_type_2') p on p.code = u.position_id  left join (select code,value,value_en from domain_table where domain_name = 'user_permission') r on r.code = u.role_id  where u.active = '1'";
 		INSERT_USER_SQL = " INSERT INTO user (object_id, account, emp_id,department_id,position_id,address,building_id,superior_id,enp_id,user_name, password, mobile_num,main_mobile_num,language,sex,birthday,emp_date,emp_end_date,approval_limits,id_card,job,is_outsourcing, email, status, profile_photo,role_id, create_user, create_time, modify_user, modify_time, active, remark) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 	}
 	
@@ -58,8 +74,7 @@ public class UserDaoImpl implements UserDao{
 		StringBuffer buffer = new StringBuffer(SELECT_USER_SQL);
 		ArrayList<Object> arrayList = new ArrayList<>();
 		if(StringUtil.hasText(loginNum)&&!StringUtil.hasText(password)){
-			buffer.append("where mobile_num = ? and active = 1 and status =1");
-			arrayList.add(loginNum);
+			return validateMobileNum(loginNum);
 		} else {
 			buffer.append(" where mobile_num = ? and active = 1 and status =1 and  password= ?");
 			arrayList.add(loginNum);
@@ -156,13 +171,22 @@ public class UserDaoImpl implements UserDao{
 		return user;
 	}
 
+	/** 
+	* @Title: queryUserList 
+	* @Description 查询人员信息列表
+	* @param pageRequest
+	* @param user
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日上午11:51:40
+	*/ 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Page queryUserList(PageRequest pageRequest, User user) {
 		if(!StringUtil.hasText(pageRequest.getOrderBy())){
 			pageRequest.setOrderBy("u.emp_id");
 		}
-		StringBuffer buffer = new StringBuffer(SELECTSQL);
+		StringBuffer buffer = new StringBuffer(SELECT_USERLIST_SQL);
 		ArrayList<Object> args = new ArrayList<>();
 		if(StringUtil.hasText(user.getObjectId())){
 			buffer.append(" and u.object_id = ?");
@@ -215,10 +239,15 @@ public class UserDaoImpl implements UserDao{
 		return baseJdbcDao.queryPageMap(pageRequest, buffer.toString(), args.toArray());
 	}
 	
-	/**
-	 * 
-	 * @param length //生成几位的随机数
-	 */
+	
+	/** 
+	* @Title: RandowNumberByLength 
+	* @Description 生成任意位的随机数 
+	* @param length 随机数长度
+	* @return String 随机数
+	* @author 南征
+	* @date 2018年6月14日上午11:25:25
+	*/ 
 	private String RandowNumberByLength(int length){
 		Random random = new Random();
 		String result = "";

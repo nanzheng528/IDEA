@@ -50,7 +50,7 @@ public class ProcessServiceImpl implements ProcessService {
 		if (!StringUtil.hasText((String)map.get("objectId"))&& null == map.get("maintenaceType")) {
 			throw new BusinessException("流程ID和巡检类型不能同时为空", "403");
 		}
-		return processDao.selectUserById(map);
+		return processDao.selectUserByColumnName(map);
 	}
 
 	@Override
@@ -58,6 +58,14 @@ public class ProcessServiceImpl implements ProcessService {
 		return processDao.queryProcess(process);
 	}
 
+	/** 
+	* @Title: updateProcess 
+	* @Description 更新流程
+	* @param process
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午2:18:59
+	*/ 
 	@Override
 	public String updateProcess(Process process) {
 		if (!StringUtil.hasText(process.getProcessUser())) {

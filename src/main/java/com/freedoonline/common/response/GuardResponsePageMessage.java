@@ -2,6 +2,17 @@ package com.freedoonline.common.response;
 
 import cn.cloudlink.core.common.dataaccess.data.Page;
 
+
+
+/**
+  * 
+  *<p>类名：GuardResponsePageMessage.java</p>
+  * @Descprition 响应返回分页类型
+  * @author 南征
+  * @version 1.0
+  * @since JDK1.8
+  *<p>创建日期：上午9:49:04</p>
+  */
 public class GuardResponsePageMessage<T> {
 	/**
 	 * 状态 1 成功  -1 失败
@@ -77,6 +88,18 @@ public class GuardResponsePageMessage<T> {
 		return val;
 	}
 	
+
+
+	
+	/** 
+	* @Title: GuardResponsePageMessage
+	* @Description: 
+	* @param stat
+	* @param msg
+	* @param page 
+	* @author 南征
+	* @date 2018年6月14日上午9:42:25
+	*/ 
 	@SuppressWarnings("unchecked")
 	private GuardResponsePageMessage(int stat, String msg, Page page){
 		this.stat = stat;
@@ -90,11 +113,28 @@ public class GuardResponsePageMessage<T> {
 		this.last = page.getPageNum() == totalPages;
 		
 	}
+	
+	/** 
+	* @Title: getTotalPages 
+	* @Description: 计算总页数
+	* @param page
+	* @return int
+	* @author 南征
+	* @date 2018年6月14日上午9:40:57
+	*/ 
 	private int getTotalPages (Page page){
 		return (int) Math.ceil((page.getTotalLength() *1.0/ page.getPageSize())); 
 	}
 	
 	
+	/** 
+	* @Title: 返回分页数据响应的静态方法
+	* @Description 返回分页数据响应的静态方法
+	* @param page
+	* @return GuardResponsePageMessage<T>
+	* @author 南征
+	* @date 2018年6月14日上午9:50:33
+	*/ 
 	public static <T> GuardResponsePageMessage<T> creatBySuccessPageData(Page page){
 		return new GuardResponsePageMessage<T>(ResponseCode.SUCCESS.getCode(),ResponseCode.SUCCESS.getMsg(),page);
 	}

@@ -42,6 +42,15 @@ public class MeterController extends BaseController{
 	private MeterService meterService;
 	
 	
+	/** 
+	* @Title: addMeter 
+	* @Description 添加表计
+	* @param request
+	* @param meter
+	* @return GuardRresponseMessage
+	* @author 南征
+	* @date 2018年6月14日下午1:52:32
+	*/ 
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/addMeter")
 	public GuardRresponseMessage addMeter (HttpServletRequest request,@RequestBody Meter meter){
@@ -65,6 +74,15 @@ public class MeterController extends BaseController{
 		}
 	}
 	
+	/** 
+	* @Title: delMeter 
+	* @Description 删除表计
+	* @param request 
+	* @param objectId
+	* @return GuardRresponseMessage
+	* @author 南征
+	* @date 2018年6月14日下午1:53:03
+	*/ 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping("/delMeter/{objectId}")
 	public GuardRresponseMessage delMeter (HttpServletRequest request,@PathVariable(value = "objectId") String objectId){
@@ -91,6 +109,15 @@ public class MeterController extends BaseController{
 		}
 	}
 	
+	/** 
+	* @Title: updateMeter 
+	* @Description 更新表计
+	* @param request
+	* @param meter
+	* @return GuardRresponseMessage
+	* @author 南征
+	* @date 2018年6月14日下午1:53:25
+	*/ 
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/updateMeter")
 	public GuardRresponseMessage updateMeter (HttpServletRequest request,@RequestBody Meter meter){
@@ -116,6 +143,15 @@ public class MeterController extends BaseController{
 		}
 	}
 	
+	/** 
+	* @Title: queryMeter 
+	* @Description 查询表计
+	* @param request
+	* @param meter
+	* @return Object
+	* @author 南征
+	* @date 2018年6月14日下午1:53:37
+	*/ 
 	@PostMapping("/queryMeterList")
 	public Object queryMeter(HttpServletRequest request,@RequestBody MeterBo meter){
 		try {
@@ -140,6 +176,15 @@ public class MeterController extends BaseController{
 	}
 	
 	
+	/** 
+	* @Title: queryPosition 
+	* @Description 查询区域位置信息
+	* @param request
+	* @param queryMap
+	* @return GuardRresponseMessage
+	* @author 南征
+	* @date 2018年6月14日下午1:53:55
+	*/ 
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/queryPosition")
 	public GuardRresponseMessage queryPosition (HttpServletRequest request,@RequestBody Map<String, Object> queryMap){

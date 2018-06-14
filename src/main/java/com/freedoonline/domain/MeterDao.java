@@ -10,14 +10,15 @@ import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 
 public interface MeterDao {
+	//添加表计
 	public String addMeter(Meter meter);
-	
+	//删除表计
 	public int delMeter(Map<String, Object> map);
-	
+	//更新表计
 	public int updateMeter(Meter meter);
-	
+	//查询表计
 	public Page<Meter> queryMeterData(PageRequest pageRequest,MeterBo meter); 
-	
+	//查询位置信息
 	public List queryPosition(Map<String,Object> searchMap);
 	
 }

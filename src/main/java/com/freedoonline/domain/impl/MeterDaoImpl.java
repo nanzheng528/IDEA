@@ -22,16 +22,47 @@ import cn.cloudlink.core.common.dataaccess.data.Page;
 import cn.cloudlink.core.common.dataaccess.data.PageRequest;
 import cn.cloudlink.core.common.utils.StringUtil;
 
+/**
+  * 
+  *<p>类名：MeterDaoImpl.java</p>
+  * @Descprition 表计DAO实现类
+  * @author 南征
+  * @version 1.0
+  * @since JDK1.8
+  *<p>创建日期：下午1:46:10</p>
+  */
 @Repository
 public class MeterDaoImpl implements MeterDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(MeterController.class);
 	@Autowired
 	private BaseJdbcDao baseJdbcDao;
-
+	
+	/**
+	 * fieldType: int
+	 * field: RUNSTATUS
+	 * @Description 运行中状态
+	 */
 	private static final int RUNSTATUS = 1;
+	
+	/**
+	 * fieldType: int
+	 * field: UNRUNSTATUS
+	 * @Description 未运行状态
+	 */
 	private static final int UNRUNSTATUS = 0;
+	/**
+	 * fieldType: int
+	 * field: ACTIVE
+	 * @Description 有效状态
+	 */
 	private static final int ACTIVE = 1;
+	
+	/**
+	 * fieldType: int
+	 * field: UNACTIVE
+	 * @Description 无效状态
+	 */
 	private static final int UNACTIVE = 0;
 
 	static String INSERTMETERSQL;
@@ -50,6 +81,14 @@ public class MeterDaoImpl implements MeterDao {
 		SELECTBUIDINGAREASQL = "select object_id , area_name from  building_area where 1 = 1 "; 
 	}
 
+	/** 
+	* @Title: addMeter 
+	* @Description 添加表计
+	* @param meter
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午1:52:08
+	*/ 
 	public String addMeter(Meter meter) {
 		String objectId = (!StringUtil.hasText(meter.getObjectId())) ? UUID.randomUUID().toString()
 				: meter.getObjectId();
@@ -65,6 +104,14 @@ public class MeterDaoImpl implements MeterDao {
 
 	}
 
+	/** 
+	* @Title: 删除表计
+	* @Description 删除表计信息
+	* @param map
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午1:51:36
+	*/ 
 	@Override
 	public int delMeter(Map<String, Object> map) {
 		Object[] args = { UNACTIVE, map.get("modifyUser"), new Date(), map.get("objectId"), };
@@ -72,6 +119,14 @@ public class MeterDaoImpl implements MeterDao {
 
 	}
 
+	/** 
+	* @Title: updateMeter 
+	* @Description 更新表计信息
+	* @param meter
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午1:51:03
+	*/ 
 	@Override
 	public int updateMeter(Meter meter) {
 		Object[] args = { meter.getName(), meter.getNumber() , meter.getType(), meter.getEnergyType(), meter.getUnit(),
@@ -82,6 +137,15 @@ public class MeterDaoImpl implements MeterDao {
 		return baseJdbcDao.update(UPDATESQL, args);
 	}
 
+	/** 
+	* @Title: queryMeterData 
+	* @Description 查询表计列表信息
+	* @param pageRequest 分页信息
+	* @param meter 
+	* @return 
+	* @author 南征
+	* @date 2018年6月14日下午1:50:31
+	*/ 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Page<Meter> queryMeterData(PageRequest pageRequest, MeterBo meter) {
@@ -115,6 +179,14 @@ public class MeterDaoImpl implements MeterDao {
 		return queryPage;
 	}
 
+	/** 
+	* @Title: queryPosition 
+	* @Description 查询区域位置信息
+	* @param searchMap
+	* @return List
+	* @author 南征
+	* @date 2018年6月14日下午1:48:08
+	*/ 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List queryPosition(Map<String, Object> searchMap) {
@@ -122,9 +194,11 @@ public class MeterDaoImpl implements MeterDao {
 		ArrayList<Object> args = new ArrayList<>();
 		//查询语句
 		StringBuffer stringBufferSql = new StringBuffer(SELECTBUIDINGAREASQL);
+		//如果没有传入objectId 怎查询所有父节点
 		if(!StringUtil.hasText((String)searchMap.get("objectId"))){
 			stringBufferSql.append(" and parent_id is null");
 		}
+		//查询传入父节点下的所有子节点
 		if(StringUtil.hasText((String)searchMap.get("objectId"))){
 			stringBufferSql.append(" and parent_id = ?");
 			args.add(searchMap.get("objectId"));
