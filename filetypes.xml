@@ -1,6 +1,7 @@
 <application>
   <component name="FileTypeManager" version="17">
     <extensionMap>
+      <mapping pattern="TestService" type="PLAIN_TEXT" />
       <mapping pattern="application-dev" type="YAML" />
     </extensionMap>
   </component>
