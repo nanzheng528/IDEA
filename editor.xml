@@ -5,6 +5,7 @@
     <option name="LINE_SPACING" value="1.2" />
   </component>
   <component name="EditorSettings">
+    <option name="USE_SOFT_WRAPS" value="" />
     <option name="SHOW_QUICK_DOC_ON_MOUSE_OVER_ELEMENT" value="true" />
   </component>
 </application>
