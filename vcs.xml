@@ -6,8 +6,12 @@
           <option name="url" value="http://bitbucket.gbim.cc/scm/buildingguard/cloudlink-building-guard.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/nanzheng528/practice.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="E:\" />
+    <option name="cloneParentDir" value="E:\faceview" />
   </component>
 </application>
