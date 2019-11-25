@@ -4,4 +4,8 @@
     <option name="FONT_FAMILY" value="Fira Code" />
     <option name="SECONDARY_FONT_FAMILY" value="Consolas" />
   </component>
+  <component name="TodoConfiguration">
+    <pattern pattern="\btodo\b.*" />
+    <pattern pattern="\bfixme\b.*" />
+  </component>
 </application>
