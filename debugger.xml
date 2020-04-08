@@ -80,10 +80,10 @@
     </filter>
   </component>
   <component name="XDebuggerSettings">
-    <data-views>
-      <option name="showLibraryStackFrames" value="false" />
-    </data-views>
-    <general />
+    <data-views />
+    <general>
+      <option name="hideDebuggerOnProcessTermination" value="true" />
+    </general>
     <debuggers>
       <debugger id="javascript">
         <configuration>
