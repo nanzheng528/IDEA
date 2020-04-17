@@ -3,6 +3,11 @@
     <option name="FONT_FAMILY" value="JetBrains Mono" />
   </component>
   <component name="EditorSettings">
+    <option name="languageBreadcrumbsMap">
+      <map>
+        <entry key="JAVA" value="true" />
+      </map>
+    </option>
     <option name="USE_SOFT_WRAPS" value="" />
   </component>
 </application>
