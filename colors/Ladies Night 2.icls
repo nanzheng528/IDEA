@@ -168,7 +168,8 @@
     </option>
     <option name="CUSTOM_LINE_COMMENT_ATTRIBUTES">
       <value>
-        <option name="FOREGROUND" value="7d8c93" />
+        <option name="FOREGROUND" value="93171c" />
+        <option name="BACKGROUND" value="410b10" />
       </value>
     </option>
     <option name="CUSTOM_MULTI_LINE_COMMENT_ATTRIBUTES">
