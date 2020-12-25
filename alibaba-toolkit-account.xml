@@ -1,0 +1,19 @@
+<application>
+  <component name="AccountStore">
+    <option name="accountString" value="{&quot;Default&quot;:{&quot;profileName&quot;:&quot;Default&quot;,&quot;ak&quot;:&quot;nors2020@1196669466045393.onaliyun.com&quot;,&quot;secret&quot;:&quot;root@2020!&quot;,&quot;show&quot;:false}}" />
+    <option name="allAccount">
+      <map>
+        <entry key="Default">
+          <value>
+            <AccountModel>
+              <option name="ak" value="nors2020@1196669466045393.onaliyun.com" />
+              <option name="profileName" value="Default" />
+              <option name="secret" value="root@2020!" />
+            </AccountModel>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="defaultProfile" value="Default" />
+  </component>
+</application>
