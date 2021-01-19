@@ -1,6 +1,7 @@
 <application>
   <component name="TipsStore">
     <option name="globalFirstStartUp" value="false" />
+    <entry projectPath="D:/1dev/h5app-corp-quickstart" startUpFlag="FIRST" />
     <entry projectPath="D:/1dev/java/practice" startUpFlag="FIRST" />
     <entry projectPath="D:/1dev/payment-spring-boot-samples" startUpFlag="FIRST" />
     <entry projectPath="D:/1dev/spring-pass" startUpFlag="FIRST" />
