@@ -10,6 +10,10 @@
           <option name="url" value="http://47.112.250.132" />
           <option name="userName" value="nanzheng" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://gitlab10.supaur.cn" />
+          <option name="userName" value="spc-124" />
+        </UrlAndUserName>
       </list>
     </option>
   </component>
