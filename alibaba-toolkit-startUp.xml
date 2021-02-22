@@ -1,6 +1,7 @@
 <application>
   <component name="TipsStore">
     <option name="globalFirstStartUp" value="false" />
+    <entry projectPath="D:/1dev/coupon" startUpFlag="FIRST" />
     <entry projectPath="D:/1dev/coupon-app" startUpFlag="FIRST" />
     <entry projectPath="D:/1dev/coupon-biz" startUpFlag="FIRST" />
     <entry projectPath="D:/1dev/coupon-biz-api" startUpFlag="FIRST" />
